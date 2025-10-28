@@ -179,7 +179,6 @@ class MainActivity : AppCompatActivity(), CharacterCreationDialog.CharacterCreat
 
     private fun startWifiDirectService(){
         if (ensureLocationPermission()){
-            startService(Intent(this, WifiDirectActivity::class.java))
         }
     }
 }
