@@ -18,7 +18,7 @@ class BattleViewModel : ViewModel() {
     //should only store data not whole views
     val listOfParticipant = mutableListOf<CardView>()
 //    val cardList: MutableList<BattleCardData> = mutableListOf()
-    data class CardData(val cardTitle: String, val health: Int, val healthPool: Int, val shield: Int, val shieldPool: Int, val armor: Int, val initiative: Int,
+    data class CardData(val cardTitle: String, var health: Int, val healthPool: Int, var shield: Int, val shieldPool: Int, var armor: Int, var initiative: Int,
                         val effects: MutableList<String>, val effectsDuration: MutableList<String>)
     val cardDataList: MutableList<CardData> = mutableListOf()
 

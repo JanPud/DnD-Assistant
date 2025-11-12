@@ -131,6 +131,8 @@ class BattleFragment : Fragment() {
             } else {
                 deleteCard(lastSelectedCard)
                 lastSelectedCard = null
+                currentParticipant = currentParticipant -1
+                highlightNextCard()
             }
         }
 
@@ -148,7 +150,7 @@ class BattleFragment : Fragment() {
 
                 view.findViewById<EditText>(R.id.enter_damage_field).hint = "Amount to deal"
                 val targetDropDown = view.findViewById<AutoCompleteTextView>(R.id.damage_to)
-                val targetList = listOf("Health", "Shield", "AR")
+                val targetList = listOf("Health", "Shield", "AR", "Initiative")
                 val adapterTarget = ArrayAdapter(requireActivity(), android.R.layout.simple_list_item_1, targetList)
                 targetDropDown.setAdapter(adapterTarget)
                 builder
@@ -172,24 +174,63 @@ class BattleFragment : Fragment() {
                             ).show()
                             return@setOnClickListener
                         } else {
-                            val health = lastSelectedCard?.findViewById<TextView>(R.id.currentHealth)?.text.toString().toInt()
-                            val shield = lastSelectedCard?.findViewById<TextView>(R.id.currentShield)?.text.toString().toInt()
-                            val armor = lastSelectedCard?.findViewById<TextView>(R.id.currentArmor)?.text.toString().toInt()
-                            when (targetDropDown.text.toString()){
-                                "Health" -> {
-                                    lastSelectedCard?.findViewById<TextView>(R.id.currentHealth)?.text = (health-damage.toString().toInt()).toString()
-                                }
-                                "Shield" -> {
-                                    if(shield>=damage.toString().toInt()) {
-                                        lastSelectedCard?.findViewById<TextView>(R.id.currentShield)?.text =
-                                            (shield.toString().toInt() - damage.toString().toInt()).toString()
-                                    } else {
-                                        lastSelectedCard?.findViewById<TextView>(R.id.currentShield)?.text = "0"
-                                        lastSelectedCard?.findViewById<TextView>(R.id.currentHealth)?.text = (health-damage.toString().toInt()+shield).toString()
+                            val cardTitle = lastSelectedCard?.rootView?.findViewById<TextView>(R.id.cardTitle)?.text.toString()
+                            val cardInitiative =  lastSelectedCard?.rootView?.findViewById<TextView>(R.id.currentInitiative)?.text.toString().toInt()
+                            val cardData = viewModel.cardDataList.find { it.cardTitle == cardTitle && it.initiative == cardInitiative}
+                            if (cardData == null){
+                                return@setOnClickListener
+                            }else {
+                                when (targetDropDown.text.toString()) {
+                                    "Health" -> {
+                                        val health =
+                                            lastSelectedCard?.findViewById<TextView>(R.id.currentHealth)?.text.toString()
+                                                .toInt()
+                                        val newHealth = health - damage.toString().toInt()
+                                        cardData.health = newHealth
+                                        lastSelectedCard?.findViewById<TextView>(R.id.currentHealth)?.text =
+                                            (newHealth).toString()
                                     }
-                                }
-                                "AR" -> {
-                                    lastSelectedCard?.findViewById<TextView>(R.id.currentArmor)?.text = (armor-damage.toString().toInt()).toString()
+
+                                    "Shield" -> {
+                                        val health =
+                                            lastSelectedCard?.findViewById<TextView>(R.id.currentHealth)?.text.toString()
+                                                .toInt()
+                                        val shield =
+                                            lastSelectedCard?.findViewById<TextView>(R.id.currentShield)?.text.toString()
+                                                .toInt()
+                                        if (shield >= damage.toString().toInt()) {
+                                            val newShield = shield - damage.toString().toInt()
+                                            cardData.shield = newShield
+                                            lastSelectedCard?.findViewById<TextView>(R.id.currentShield)?.text =
+                                                (newShield).toString()
+                                        } else {
+                                            val newHealth = health - damage.toString()
+                                                .toInt() + shield
+                                            cardData.shield = 0
+                                            cardData.health = newHealth
+                                            lastSelectedCard?.findViewById<TextView>(R.id.currentShield)?.text =
+                                                "0"
+                                            lastSelectedCard?.findViewById<TextView>(R.id.currentHealth)?.text =
+                                                (newHealth).toString()
+                                        }
+                                    }
+
+                                    "AR" -> {
+                                        val armor =
+                                            lastSelectedCard?.findViewById<TextView>(R.id.currentArmor)?.text.toString()
+                                                .toInt()
+                                        val newArmor = armor - damage.toString().toInt()
+                                        cardData.armor = newArmor
+                                        lastSelectedCard?.findViewById<TextView>(R.id.currentArmor)?.text =
+                                            (newArmor).toString()
+                                    }
+
+                                    "Initiative" -> {
+                                        val initiative = lastSelectedCard?.findViewById<TextView>(R.id.currentInitiative)?.text.toString().toInt()
+                                        val newInit = initiative - damage.toString().toInt()
+                                        cardData.initiative = newInit
+                                        lastSelectedCard?.findViewById<TextView>(R.id.currentInitiative)?.text = newInit.toString()
+                                    }
                                 }
                             }
                             dialog.dismiss()
@@ -216,7 +257,7 @@ class BattleFragment : Fragment() {
 
                 view.findViewById<EditText>(R.id.enter_damage_field).hint = "Amount to regain"
                 val targetDropDown = view.findViewById<AutoCompleteTextView>(R.id.damage_to)
-                val targetList = listOf("Health", "Shield", "AR")
+                val targetList = listOf("Health", "Shield", "AR", "Initiative")
                 val adapterTarget = ArrayAdapter(requireActivity(), android.R.layout.simple_list_item_1, targetList)
                 targetDropDown.setAdapter(adapterTarget)
                 builder
@@ -240,19 +281,38 @@ class BattleFragment : Fragment() {
                             ).show()
                             return@setOnClickListener
                         } else {
-                            val health = lastSelectedCard?.findViewById<TextView>(R.id.currentHealth)?.text.toString().toInt()
-                            val shield = lastSelectedCard?.findViewById<TextView>(R.id.currentShield)?.text.toString().toInt()
-                            val armor = lastSelectedCard?.findViewById<TextView>(R.id.currentArmor)?.text.toString().toInt()
-                            when (targetDropDown.text.toString()){
-                                "Health" -> {
-                                    lastSelectedCard?.findViewById<TextView>(R.id.currentHealth)?.text = (health+damage.toString().toInt()).toString()
-                                }
-                                "Shield" -> {
+                            val cardTitle = lastSelectedCard?.rootView?.findViewById<TextView>(R.id.cardTitle)?.text.toString()
+                            val cardInitiative =  lastSelectedCard?.rootView?.findViewById<TextView>(R.id.currentInitiative)?.text.toString().toInt()
+                            val cardData = viewModel.cardDataList.find { it.cardTitle == cardTitle && it.initiative == cardInitiative}
+                            if (cardData == null){
+                                return@setOnClickListener
+                            }else {
+                                when (targetDropDown.text.toString()){
+                                    "Health" -> {
+                                        val health = lastSelectedCard?.findViewById<TextView>(R.id.currentHealth)?.text.toString().toInt()
+                                        val newHealth = health+damage.toString().toInt()
+                                        cardData.health = newHealth
+                                        lastSelectedCard?.findViewById<TextView>(R.id.currentHealth)?.text = (newHealth).toString()
+                                    }
+                                    "Shield" -> {
+                                        val shield = lastSelectedCard?.findViewById<TextView>(R.id.currentShield)?.text.toString().toInt()
+                                        val newShield = shield + damage.toString().toInt()
+                                        cardData.shield = newShield
                                         lastSelectedCard?.findViewById<TextView>(R.id.currentShield)?.text =
-                                            (shield.toString().toInt() + damage.toString().toInt()).toString()
-                                }
-                                "AR" -> {
-                                    lastSelectedCard?.findViewById<TextView>(R.id.currentArmor)?.text = (armor+damage.toString().toInt()).toString()
+                                            (newShield).toString()
+                                    }
+                                    "AR" -> {
+                                        val armor = lastSelectedCard?.findViewById<TextView>(R.id.currentArmor)?.text.toString().toInt()
+                                        val newArmor = armor+damage.toString().toInt()
+                                        cardData.armor = newArmor
+                                        lastSelectedCard?.findViewById<TextView>(R.id.currentArmor)?.text = (newArmor).toString()
+                                    }
+                                    "Initiative" -> {
+                                        val initiative = lastSelectedCard?.findViewById<TextView>(R.id.currentInitiative)?.text.toString().toInt()
+                                        val newInit = initiative+damage.toString().toInt()
+                                        cardData.initiative = newInit
+                                        lastSelectedCard?.findViewById<TextView>(R.id.currentInitiative)?.text = newInit.toString()
+                                    }
                                 }
                             }
                             dialog.dismiss()
