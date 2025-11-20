@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModel
 import com.dndassistant.BattleCardData
 import com.dndassistant.R
 import com.google.android.material.chip.Chip
+import kotlinx.serialization.Serializable
 import java.util.zip.Inflater
 
 class BattleViewModel : ViewModel() {
@@ -18,6 +19,7 @@ class BattleViewModel : ViewModel() {
     //should only store data not whole views
     val listOfParticipant = mutableListOf<CardView>()
 //    val cardList: MutableList<BattleCardData> = mutableListOf()
+    @Serializable
     data class CardData(val cardTitle: String, var health: Int, val healthPool: Int, var shield: Int, val shieldPool: Int, var armor: Int, var initiative: Int,
                         val effects: MutableList<String>, val effectsDuration: MutableList<String>)
     val cardDataList: MutableList<CardData> = mutableListOf()

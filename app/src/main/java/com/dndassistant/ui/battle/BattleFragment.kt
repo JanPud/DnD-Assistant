@@ -3,6 +3,7 @@ package com.dndassistant.ui.battle
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,7 @@ import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.EditText
+import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.PopupWindow
 import android.widget.TextView
@@ -27,6 +29,7 @@ import com.dndassistant.ui.AddParticipant
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.dndassistant.ui.battle.BattleViewModel.CardData
 import com.google.android.material.chip.Chip
+import com.google.android.material.color.MaterialColors
 import kotlin.text.toInt
 
 class BattleFragment : Fragment() {
@@ -606,15 +609,22 @@ class BattleFragment : Fragment() {
         if (numOfCards == 0) {return}
 
         if (currentParticipant != -1){
+            val typedValue = TypedValue()
+            val found = context?.theme?.resolveAttribute(androidx.appcompat.R.attr.background, typedValue, true)
             val previousCard = cardContainer.getChildAt(currentParticipant) as CardView
-            previousCard.findViewById<LinearLayout>(R.id.overall_add_participant_layout).background = null
+//            previousCard.findViewById<LinearLayout>(R.id.overall_add_participant_layout).setBackgroundColor(resources.getColor(R.color.white))
+//            previousCard.findViewById<FrameLayout>(R.id.overall_add_participant_layout).background = null
+            previousCard.findViewById<LinearLayout>(R.id.overall_add_participant_layout).setBackgroundColor(typedValue.data)
         }
 
         currentParticipant = (currentParticipant + 1) % numOfCards
 
+        val typedValue = TypedValue()
+        val found = context?.theme?.resolveAttribute(R.attr.cardBackgroundDrawable, typedValue, true)
         val newCard = cardContainer.getChildAt(currentParticipant) as CardView
-        newCard.findViewById<LinearLayout>(R.id.overall_add_participant_layout).background =
-            ResourcesCompat.getDrawable(resources, R.drawable.participant_frame, null)
+//        newCard.findViewById<FrameLayout>(R.id.overall_add_participant_layout).background =
+//            ResourcesCompat.getDrawable(resources, R.drawable.participant_frame, null)
+        newCard.findViewById<LinearLayout>(R.id.overall_add_participant_layout).setBackgroundResource(typedValue.resourceId)
     }
 
     fun createCardView(card: CardData, layoutInflater: LayoutInflater, cardContainer: LinearLayout): CardView{
@@ -652,14 +662,67 @@ class BattleFragment : Fragment() {
             }
         }
 
-        cardView.setOnClickListener {
-            lastSelectedCard?.cardElevation = 8f
-            lastSelectedCard?.setCardBackgroundColor(Color.WHITE)
+        val typedValue = TypedValue()
+        val found = context?.theme?.resolveAttribute(androidx.appcompat.R.attr.background, typedValue, true)
+        cardView.findViewById<LinearLayout>(R.id.overall_add_participant_layout).setBackgroundColor(typedValue.data)
 
-            cardView.findViewById<LinearLayout>(R.id.overall_add_participant_layout)
-            cardView.cardElevation = 24f
-            cardView.setCardBackgroundColor(resources.getColor(R.color.void_light))
-            lastSelectedCard = cardView
+        cardView.setOnClickListener {
+            lastSelectedCard?.cardElevation = 4f
+            if (currentParticipant != -1) {
+                val currentParticipantView = cardContainer.getChildAt(currentParticipant)
+                val currentTitle =
+                    currentParticipantView.findViewById<TextView>(R.id.cardTitle).text
+                val lastSelectedCardTitle = lastSelectedCard?.findViewById<TextView>(R.id.cardTitle)?.text
+                if (currentTitle == lastSelectedCardTitle) {
+                    val typedValue = TypedValue()
+                    val found = context?.theme?.resolveAttribute(R.attr.cardBackgroundDrawable, typedValue, true)
+                    lastSelectedCard?.findViewById<LinearLayout>(R.id.overall_add_participant_layout)?.setBackgroundResource(typedValue.resourceId)
+                }else{
+                    val typedValue = TypedValue()
+                    context?.theme?.resolveAttribute(
+                        androidx.appcompat.R.attr.background,
+                        typedValue,
+                        true
+                    )
+//            lastSelectedCard?.setCardBackgroundColor(typedValue.data)
+                    lastSelectedCard?.findViewById<LinearLayout>(R.id.overall_add_participant_layout)
+                        ?.setBackgroundColor(typedValue.data)
+                }
+            } else {
+                val typedValue = TypedValue()
+                context?.theme?.resolveAttribute(
+                    androidx.appcompat.R.attr.background,
+                    typedValue,
+                    true
+                )
+                lastSelectedCard?.findViewById<LinearLayout>(R.id.overall_add_participant_layout)
+                    ?.setBackgroundColor(typedValue.data)
+            }
+
+            if (currentParticipant != -1) {
+                val currentParticipantView = cardContainer.getChildAt(currentParticipant)
+                val currentTitle =
+                    currentParticipantView.findViewById<TextView>(R.id.cardTitle).text
+                if (card.cardTitle == currentTitle) {
+                    cardView.findViewById<LinearLayout>(R.id.overall_add_participant_layout)?.setBackgroundResource(R.drawable.participant_frame_clicked_highlight)
+                    cardView.cardElevation = 24f
+                    lastSelectedCard = cardView
+                } else {
+                    val layout =
+                        cardView.findViewById<LinearLayout>(R.id.overall_add_participant_layout)
+                    cardView.cardElevation = 24f
+//            cardView.setCardBackgroundColor(resources.getColor(R.color.void_light))
+                    layout.setBackgroundColor(resources.getColor(R.color.void_light))
+                    lastSelectedCard = cardView
+                }
+            } else {
+                val layout =
+                    cardView.findViewById<LinearLayout>(R.id.overall_add_participant_layout)
+                cardView.cardElevation = 24f
+//            cardView.setCardBackgroundColor(resources.getColor(R.color.void_light))
+                layout.setBackgroundColor(resources.getColor(R.color.void_light))
+                lastSelectedCard = cardView
+            }
         }
 
         return cardView
