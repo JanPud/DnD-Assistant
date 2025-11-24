@@ -18,9 +18,23 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         versionNameSuffix = "alpha"
+//        multiDexEnabled = true
+    }
+
+    signingConfigs {
+        getByName("debug") {
+            enableV1Signing = true
+            enableV2Signing = true
+            enableV3Signing = true
+        }
     }
 
     buildTypes {
+        debug {
+            signingConfig = signingConfigs.getByName("debug")
+            isDebuggable = true
+            isMinifyEnabled = false
+        }
         release {
             isMinifyEnabled = false
             proguardFiles(
@@ -38,6 +52,12 @@ android {
     }
     buildFeatures {
         viewBinding = true
+    }
+
+    splits{
+        abi{
+            isEnable = false
+        }
     }
 }
 
@@ -58,4 +78,6 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.gms.nearby)
 //    implementation(libs.gson)
+//    implementation("androidx.multidex:multidex:2.0.1")
+
 }
