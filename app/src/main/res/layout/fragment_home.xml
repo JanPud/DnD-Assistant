@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.home.HomeFragment">
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginVertical="@dimen/frame_margin"
+        android:layout_marginHorizontal="32dp">
+        <TableRow>
+            <ToggleButton
+                android:id="@+id/hosting_button"
+                android:layout_width="160dp"
+                android:layout_height="50dp"
+                android:enabled="false"
+                android:textOff="Host"
+                android:textOn="Stop Hosting"/>
+            <TextView
+                android:id="@+id/hosting_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/frame_margin"
+                android:text="Not hosting"/>
+        </TableRow>
+        <TableRow>
+            <ToggleButton
+                android:id="@+id/discovery_button"
+                android:layout_width="160dp"
+                android:layout_height="50dp"
+                android:enabled="false"
+                android:textOff="Discover"
+                android:textOn="Stop Discovering"/>
+            <TextView
+                android:id="@+id/discovery_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/frame_margin"
+                android:text="Not discovering"/>
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/character_class_margin"
+                android:gravity="end"
+                android:text="Host tag: "/>
+            <TextView
+                android:id="@+id/host_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/character_class_margin"
+                android:text="---"/>
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/character_class_margin"
+                android:gravity="end"
+                android:text="Your tag: "/>
+            <TextView
+                android:id="@+id/your_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/character_class_margin"
+                android:text="---"/>
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/character_class_margin"
+                android:gravity="end"
+                android:text="Other users: "/>
+            <TextView
+                android:id="@+id/other_names"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/character_class_margin"
+                android:text="---"/>
+        </TableRow>
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/character_class_margin"
+                android:gravity="end"
+                android:text="Info: "/>
+            <TextView
+                android:id="@+id/connection_info"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_margin="@dimen/character_class_margin"
+                android:singleLine="false"
+                android:ellipsize="none"
+                android:maxLines="10"
+                android:inputType="textMultiLine"
+                android:text="OK"/>
+        </TableRow>
+    </TableLayout>
+<!--    <TextView-->
+<!--        android:id="@+id/text_home"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginStart="8dp"-->
+<!--        android:layout_marginTop="8dp"-->
+<!--        android:layout_marginEnd="8dp"-->
+<!--        android:textAlignment="center"-->
+<!--        android:textSize="20sp"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent" />-->
+</androidx.constraintlayout.widget.ConstraintLayout>

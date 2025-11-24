@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="512"
+   height="512"
+   viewBox="0 0 512 512"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.4.2 (f4327f4, 2025-05-13)"
+   sodipodi:docname="Character.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#505050"
+     bordercolor="#eeeeee"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#505050"
+     inkscape:document-units="px"
+     showgrid="true"
+     showguides="true"
+     inkscape:zoom="1.5761719"
+     inkscape:cx="210.00247"
+     inkscape:cy="245.84882"
+     inkscape:window-width="1920"
+     inkscape:window-height="1009"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1">
+    <inkscape:grid
+       id="grid6"
+       units="px"
+       originx="0"
+       originy="0"
+       spacingx="1"
+       spacingy="1"
+       empcolor="#0099e5"
+       empopacity="0.30196078"
+       color="#0099e5"
+       opacity="0.14901961"
+       empspacing="5"
+       enabled="true"
+       visible="true" />
+  </sodipodi:namedview>
+  <defs
+     id="defs1">
+    <inkscape:path-effect
+       effect="mirror_symmetry"
+       start_point="258.33951,-90.652061"
+       end_point="433.45382,390.47056"
+       center_point="345.89666,149.90925"
+       id="path-effect5"
+       is_visible="true"
+       lpeversion="1.2"
+       lpesatellites=""
+       mode="vertical"
+       discard_orig_path="false"
+       fuse_paths="false"
+       oposite_fuse="false"
+       split_items="false"
+       split_open="false"
+       link_styles="false" />
+    <inkscape:path-effect
+       effect="bool_op"
+       operand-path=""
+       id="path-effect4"
+       is_visible="true"
+       lpeversion="1"
+       operation="union"
+       swap-operands="false"
+       filltype-this="from-curve"
+       filter=""
+       filltype-operand="from-curve" />
+    <filter
+       id="selectable_hidder_filter"
+       width="1"
+       height="1"
+       x="0"
+       y="0"
+       style="color-interpolation-filters:sRGB;"
+       inkscape:label="LPE boolean visibility">
+      <feComposite
+         id="boolops_hidder_primitive"
+         result="composite1"
+         operator="arithmetic"
+         in2="SourceGraphic"
+         in="BackgroundImage" />
+    </filter>
+    <inkscape:path-effect
+       effect="bool_op"
+       operand-path=""
+       id="path-effect3"
+       is_visible="true"
+       lpeversion="1"
+       operation="diff"
+       swap-operands="false"
+       filltype-this="from-curve"
+       filter=""
+       filltype-operand="from-curve" />
+    <inkscape:path-effect
+       effect="mirror_symmetry"
+       start_point="244.73882,322.77401"
+       end_point="244.73882,355.42654"
+       center_point="244.73882,339.10028"
+       id="path-effect2"
+       is_visible="true"
+       lpeversion="1.2"
+       lpesatellites=""
+       mode="free"
+       discard_orig_path="false"
+       fuse_paths="true"
+       oposite_fuse="false"
+       split_items="false"
+       split_open="false"
+       link_styles="true" />
+    <inkscape:path-effect
+       effect="mirror_symmetry"
+       start_point="229.46311,-117.09603"
+       end_point="485.46311,326.30898"
+       center_point="357.46311,104.60648"
+       id="path-effect1"
+       is_visible="true"
+       lpeversion="1.2"
+       lpesatellites=""
+       mode="vertical"
+       discard_orig_path="false"
+       fuse_paths="false"
+       oposite_fuse="false"
+       split_items="false"
+       split_open="false"
+       link_styles="false" />
+  </defs>
+  <g
+     inkscape:label="Warstwa 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       id="path6"
+       style="fill:#000000;fill-opacity:1;stroke-width:1.01244"
+       d="M 60 60 L 60 270 A 194.75836 190 0 0 0 157.37891 434.54492 A 194.75836 190 0 0 0 352.13672 434.54492 A 194.75836 190 0 0 0 449.51758 270 L 449.51758 60 C 329.8798 106.17202 203.7933 121.63079 60 60 z M 145.00195 190.02539 C 153.72724 189.71898 164.92662 191.64078 176.5332 195.86523 C 199.74637 204.31414 215.79637 218.77221 212.38086 228.15625 C 208.96535 237.54029 187.37919 238.29851 164.16602 229.84961 C 140.95285 221.40071 124.90285 206.94264 128.31836 197.55859 C 130.02612 192.86657 136.27667 190.3318 145.00195 190.02539 z M 366.99805 190.02539 C 375.72333 190.3318 381.97388 192.86657 383.68164 197.55859 C 387.09716 206.94264 371.04715 221.40071 347.83398 229.84961 C 324.62082 238.29851 303.03466 237.54029 299.61914 228.15625 C 296.20363 218.7722 312.25363 204.31413 335.4668 195.86523 C 347.07338 191.64078 358.27276 189.71898 366.99805 190.02539 z M 305.94531 329.68945 C 329.05662 329.43861 350.21484 349.58203 350.21484 349.58203 C 350.21484 349.58203 339.73954 370.98327 260.00781 371.15234 C 180.70841 371.3205 170.66602 350.21484 170.66602 350.21484 C 170.66602 350.21484 189.64982 330.04836 215.48242 329.79688 C 243.79991 329.52119 260.19336 345.14063 260.19336 345.14062 C 260.19336 345.14062 283.51115 329.93294 305.94531 329.68945 z " />
+  </g>
+</svg>

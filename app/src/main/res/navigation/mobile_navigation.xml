@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_home">
+    <action
+        android:id="@+id/action_to_Character_Creation"
+        app:destination="@+id/character_creation"/>
+
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="com.dndassistant.ui.home.HomeFragment"
+        android:label="Home"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/nav_gallery"
+        android:name="com.dndassistant.ui.gallery.GalleryFragment"
+        android:label="@string/menu_party"
+        tools:layout="@layout/fragment_gallery" />
+
+    <fragment
+        android:id="@+id/nav_slideshow"
+        android:name="com.dndassistant.ui.slideshow.SlideshowFragment"
+        android:label="@string/menu_battle"
+        tools:layout="@layout/fragment_slideshow" />
+
+    <fragment
+        android:id="@+id/nav_character"
+        android:name="com.dndassistant.ui.character.CharacterFragment"
+        android:label="@string/menu_character"
+        tools:layout="@layout/fragment_character" />
+
+    <fragment
+        android:id="@+id/character_creation"
+        android:name="com.dndassistant.ui.characterCreation.CharacterCreation"
+        android:label="@string/menu_character"
+        tools:layout="@layout/fragment_character_creation">
+        <argument
+            android:name="chName"
+            app:argType="string"/>
+        <argument
+            android:name="chLevel"
+            app:argType="integer"/>
+        <argument
+            android:name="chClass"
+            app:argType="string"/>
+        <argument
+            android:name="chSubclass"
+            app:argType="string"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_battle"
+        android:name="com.dndassistant.ui.battle.BattleFragment"
+        android:label="@string/menu_battle"
+        tools:layout="@layout/battle_fragment" />
+
+</navigation>

@@ -1,0 +1,504 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HorizontalScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        tools:context=".ui.characterCreation.CharacterCreation"
+        android:background="@color/gold_bright">
+
+        <LinearLayout
+            android:id="@+id/stat_frame_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginStart="@dimen/frame_margin"
+            android:layout_marginTop="@dimen/frame_margin">
+
+            <LinearLayout
+                android:id="@+id/stat_frame_S"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/stat_frame"
+                android:gravity="end"
+                android:orientation="vertical"
+                android:padding="@dimen/stat_margin">
+
+                <TextView
+                    android:id="@+id/mod_text_S"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/stat_frame_mod"
+                    android:fontFamily="@font/lucida_calligraphy_italic"
+                    android:text="+4"
+                    android:textAlignment="gravity"
+                    android:textSize="@dimen/stat_desc_text_size"
+                    android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/text_character_S"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="-8dp"
+                    android:fontFamily="@font/lucida_calligraphy_italic"
+                    android:text="10"
+                    android:textAlignment="center"
+                    android:layout_gravity="center"
+                    android:textSize="@dimen/stat_text_size"
+                    android:textStyle="bold"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/content_margin_vertical"
+                    android:layout_marginBottom="@dimen/content_margin_vertical"
+                    android:layout_marginHorizontal="@dimen/content_margin_vertical"
+                    android:fontFamily="@font/lucida_calligraphy_italic"
+                    android:text="@string/Strength"
+                    android:textAlignment="center"
+                    android:layout_gravity="center"
+                    android:textSize="@dimen/stat_desc_text_size"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/stat_frame_D"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/frame_margin"
+                android:background="@drawable/stat_frame"
+                android:gravity="end"
+                android:orientation="vertical"
+                android:padding="@dimen/stat_margin">
+
+                <TextView
+                    android:id="@+id/mod_text_D"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/stat_frame_mod"
+                    android:fontFamily="@font/lucida_calligraphy_italic"
+                    android:text="+0"
+                    android:textAlignment="gravity"
+                    android:textSize="@dimen/stat_desc_text_size"
+                    android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/text_character_D"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="-8dp"
+                    android:fontFamily="@font/lucida_calligraphy_italic"
+                    android:textAlignment="center"
+                    android:layout_gravity="center"
+                    android:textSize="@dimen/stat_text_size"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/content_margin_vertical"
+                    android:layout_marginBottom="@dimen/content_margin_vertical"
+                    android:layout_marginHorizontal="@dimen/content_margin_vertical"
+                    android:fontFamily="@font/lucida_calligraphy_italic"
+                    android:text="@string/Dexterity"
+                    android:textAlignment="center"
+                    android:layout_gravity="center"
+                    android:textSize="@dimen/stat_desc_text_size"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/stat_frame_V"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/frame_margin"
+                android:background="@drawable/stat_frame"
+                android:gravity="end"
+                android:orientation="vertical"
+                android:padding="@dimen/stat_margin">
+                <TextView
+                    android:id="@+id/mod_text_V"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/stat_frame_mod"
+                    android:fontFamily="@font/lucida_calligraphy_italic"
+                    android:text="+0"
+                    android:textAlignment="gravity"
+                    android:textSize="@dimen/stat_desc_text_size"
+                    android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/text_character_V"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="-8dp"
+                    android:fontFamily="@font/lucida_calligraphy_italic"
+                    android:textAlignment="center"
+                    android:layout_gravity="center"
+                    android:textSize="@dimen/stat_text_size"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/content_margin_vertical"
+                    android:layout_marginBottom="@dimen/content_margin_vertical"
+                    android:layout_marginHorizontal="@dimen/content_margin_vertical"
+                    android:fontFamily="@font/lucida_calligraphy_italic"
+                    android:text="@string/Vitality"
+                    android:textAlignment="center"
+                    android:layout_gravity="center"
+                    android:textSize="@dimen/stat_desc_text_size"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/stat_frame_I"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/frame_margin"
+                android:background="@drawable/stat_frame"
+                android:gravity="end"
+                android:orientation="vertical"
+                android:padding="@dimen/stat_margin">
+                <TextView
+                    android:id="@+id/mod_text_I"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/stat_frame_mod"
+                    android:fontFamily="@font/lucida_calligraphy_italic"
+                    android:text="+0"
+                    android:textAlignment="gravity"
+                    android:textSize="@dimen/stat_desc_text_size"
+                    android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/text_character_I"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="-8dp"
+                    android:fontFamily="@font/lucida_calligraphy_italic"
+                    android:textAlignment="center"
+                    android:layout_gravity="center"
+                    android:textSize="@dimen/stat_text_size"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/content_margin_vertical"
+                    android:layout_marginBottom="@dimen/content_margin_vertical"
+                    android:layout_marginHorizontal="@dimen/content_margin_vertical"
+                    android:fontFamily="@font/lucida_calligraphy_italic"
+                    android:text="@string/Intelligence"
+                    android:textAlignment="center"
+                    android:layout_gravity="center"
+                    android:textSize="@dimen/stat_desc_text_size"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/stat_frame_W"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/frame_margin"
+                android:background="@drawable/stat_frame"
+                android:gravity="end"
+                android:orientation="vertical"
+                android:padding="@dimen/stat_margin">
+                <TextView
+                    android:id="@+id/mod_text_W"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/stat_frame_mod"
+                    android:fontFamily="@font/lucida_calligraphy_italic"
+                    android:text="+0"
+                    android:textAlignment="gravity"
+                    android:textSize="@dimen/stat_desc_text_size"
+                    android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/text_character_W"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="-8dp"
+                    android:fontFamily="@font/lucida_calligraphy_italic"
+                    android:textAlignment="center"
+                    android:layout_gravity="center"
+                    android:textSize="@dimen/stat_text_size"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/content_margin_vertical"
+                    android:layout_marginBottom="@dimen/content_margin_vertical"
+                    android:layout_marginHorizontal="@dimen/content_margin_vertical"
+                    android:fontFamily="@font/lucida_calligraphy_italic"
+                    android:text="@string/Wisdom"
+                    android:textAlignment="center"
+                    android:layout_gravity="center"
+                    android:textSize="@dimen/stat_desc_text_size"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/stat_frame_C"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/frame_margin"
+                android:background="@drawable/stat_frame"
+                android:gravity="end"
+                android:orientation="vertical"
+                android:padding="@dimen/stat_margin">
+                <TextView
+                    android:id="@+id/mod_text_C"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/stat_frame_mod"
+                    android:fontFamily="@font/lucida_calligraphy_italic"
+                    android:text="+0"
+                    android:textAlignment="gravity"
+                    android:textSize="@dimen/stat_desc_text_size"
+                    android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/text_character_C"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="-8dp"
+                    android:fontFamily="@font/lucida_calligraphy_italic"
+                    android:textAlignment="center"
+                    android:layout_gravity="center"
+                    android:textSize="@dimen/stat_text_size"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/content_margin_vertical"
+                    android:layout_marginBottom="@dimen/content_margin_vertical"
+                    android:layout_marginHorizontal="@dimen/content_margin_vertical"
+                    android:fontFamily="@font/lucida_calligraphy_italic"
+                    android:text="@string/Charisma"
+                    android:textAlignment="center"
+                    android:layout_gravity="center"
+                    android:textSize="@dimen/stat_desc_text_size"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/name_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/frame_margin"
+            android:layout_marginTop="@dimen/frame_margin"
+            android:layout_marginEnd="@dimen/frame_margin"
+            android:background="@drawable/name_frame"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/stat_frame_layout"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/character_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:autoSizeTextType="uniform"
+                    android:fontFamily="@font/lucida_calligraphy_italic"
+                    android:paddingTop="4dp"
+                    android:text="Robertson"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/stat_text_size"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/lucida_calligraphy_italic"
+                    android:text="@string/name_caption"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/stat_desc_text_size"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingStart="4dp"
+                android:layout_marginEnd="@dimen/character_class_margin">
+
+                <TextView
+                    android:id="@+id/character_level"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="@font/lucida_calligraphy_italic"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:textSize="@dimen/stat_text_size"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/lucida_calligraphy_italic"
+                    android:text="@string/level_caption"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/char_desc_text_size"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingStart="4dp">
+
+                <TextView
+                    android:id="@+id/character_class"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="2dp"
+                    android:fontFamily="@font/lucida_calligraphy_italic"
+                    android:text="qpdb"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="2dp"
+                    android:fontFamily="@font/lucida_calligraphy_italic"
+                    android:text="@string/class_caption"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/char_desc_text_size"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/character_subclass"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="2dp"
+                    android:fontFamily="@font/lucida_calligraphy_italic"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="2dp"
+                    android:fontFamily="@font/lucida_calligraphy_italic"
+                    android:text="@string/subclass_caption"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/char_desc_text_size"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/proficiency_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@+id/stat_frame_layout"
+            app:layout_constraintTop_toBottomOf="@+id/name_layout"
+            android:layout_marginStart="@dimen/frame_margin"
+            android:layout_marginTop="@dimen/frame_margin"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@drawable/stat_frame"
+                android:fontFamily="@font/lucida_calligraphy_italic"
+                android:textStyle="bold"
+                android:textAlignment="center"
+                android:textSize="@dimen/Proficiency_text_size"
+                android:text="@string/proficiency_caption"/>
+            <TextView
+                android:id="@+id/proficiency_value"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@drawable/stat_frame"
+                android:fontFamily="@font/lucida_calligraphy_italic"
+                android:textStyle="bold"
+                android:textAlignment="center"
+                android:textSize="@dimen/Proficiency_text_size"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@+id/proficiency_layout"
+            app:layout_constraintTop_toBottomOf="@+id/name_layout"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginHorizontal="@dimen/frame_margin"
+            android:layout_marginTop="@dimen/frame_margin"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@drawable/stat_frame"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lucida_calligraphy_italic"
+                    android:textStyle="bold"
+                    android:textAlignment="center"
+                    android:textSize="@dimen/Proficiency_text_size"
+                    android:text="@string/experience_caption"/>
+                <TextView
+                    android:id="@+id/experience_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lucida_calligraphy_italic"
+                    android:textStyle="bold"
+                    android:textAlignment="center"
+                    android:textSize="@dimen/Proficiency_text_size"/>
+            </LinearLayout>
+            <ProgressBar
+                android:id="@+id/experience_progressbar"
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:progressDrawable="@drawable/exp_progress_bar"
+                android:progress="50"
+                android:max="100"/>
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</HorizontalScrollView>

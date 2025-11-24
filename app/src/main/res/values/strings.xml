@@ -1,0 +1,69 @@
+<resources>
+    <string name="app_name" translatable="false">DnDAssistant</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">DM</string>
+    <string name="nav_header_subtitle">better name pending</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+    <string name="add_character_button">Add character</string>
+
+    <string name="menu_character">Character</string>
+    <string name="menu_party">Party</string>
+    <string name="menu_battle">Battle</string>
+    <string name="menu_enemies">Enemies</string>
+    <string name="menu_items">Items</string>
+
+    <string name="choose_level">Choose a Level</string>
+    <string name="choose_class">Choose a Class</string>
+    <string name="choose_subclass">Choose a Subclass</string>
+
+    <string name="character_stat">%1$d</string>
+    <string name="level">Level</string>
+    <string name="Strength">Strength</string>
+<!--    <string name="character_dexterity">%1$d</string>-->
+    <string name="Dexterity">Dexterity</string>
+<!--    <string name="character_vitality">%1$d</string>-->
+    <string name="Vitality">Vitality</string>
+<!--    <string name="character_intelligence">%1$d</string>-->
+    <string name="Intelligence">Intelligence</string>
+<!--    <string name="character_wisdom">%1$d</string>-->
+    <string name="Wisdom">Wisdom</string>
+<!--    <string name="character_charisma">%1$d</string>-->
+    <string name="Charisma">Charisma</string>
+    <string name="class_Scientist">Scientist</string>
+    <string name="class_Soldier">Soldier</string>
+    <string name="class_Cleric">Cleric</string>
+    <string name="class_Rogue">Rogue</string>
+    <string name="class_Pilot">Pilot</string>
+    <string name="class_Envoy">Envoy</string>
+    <string name="subclass_Researcher">Researcher</string>
+    <string name="subclass_Implementer">Implementer</string>
+    <string name="subclass_Dax">Dax</string>
+    <string name="subclass_Guard">Guard</string>
+    <string name="subclass_Fundamentalist">Fundamentalist</string>
+    <string name="subclass_Alchemist">Alchemist</string>
+    <string name="subclass_Assassin">Assassin</string>
+    <string name="subclass_Outlaw">Outlaw</string>
+    <string name="subclass_Admiral">Admiral</string>
+    <string name="subclass_HotShot">Hot-Shot</string>
+    <string name="subclass_Emissary">Emissary</string>
+    <string name="subclass_Virtuoso">Virtuoso</string>
+    <string name="name_caption">Name</string>
+    <string name="level_caption">Level</string>
+    <string name="class_caption">Class</string>
+    <string name="subclass_caption">Subclass</string>
+    <string name="choose_the_name_caption">Choose the name</string>
+    <string name="proficiency_caption">Proficiency</string>
+    <string name="experience_caption">Experience: </string>
+    <string name="round_0_caption">Round %1$d</string>
+    <string name="next_round_caption">Next </string>
+    <string name="cur_health">%1$d</string>
+    <string name="health_pool">/%1$d</string>
+    <string name="hp_caption">HP</string>
+    <string name="sh_caption">SH</string>
+    <string name="ar_caption">AR</string>
+    <string name="in_caption">IN</string>
+    <string name="effect_chip_format">%1$s: %2$d rounds</string>
+    <string name="effect_chip_format_string">%1$s: %2$s</string>
+</resources>
