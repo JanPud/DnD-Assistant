@@ -518,8 +518,9 @@ class BattleFragment : Fragment() {
             }
         }
 
-        val cardTitle = cardLayout?.findViewById<TextView>(R.id.cardTitle)?.text.toString()
-        val cardInitiative =  cardLayout?.findViewById<TextView>(R.id.currentInitiative)?.text.toString().toInt()
+        val cardView = cardLayout?.rootView?.rootView?.rootView
+        val cardTitle = cardView?.findViewById<TextView>(R.id.cardTitle)?.text.toString()
+        val cardInitiative =  cardView?.findViewById<TextView>(R.id.currentInitiative)?.text.toString().toInt()
         val cardData = viewModel.cardDataList.find { it.cardTitle == cardTitle && it.initiative == cardInitiative}
 
         if (cardData == null){

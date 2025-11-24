@@ -91,9 +91,9 @@ class BattleViewModel : ViewModel() {
     }
 
     fun receiveBattleStateData(receivedCardDataList: List<CardData>){
-        _cardLiveDataList.value = receivedCardDataList.toMutableList()
         cardDataList.clear()
         cardDataList.addAll(receivedCardDataList)
+        _cardLiveDataList.value = receivedCardDataList.toMutableList()
     }
 
     fun clearCardData(){
