@@ -6,11 +6,12 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
+import android.widget.Button
 import android.widget.EditText
-import android.widget.TextView
+import android.widget.LinearLayout
 import android.widget.Toast
-import android.widget.ToggleButton
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import com.google.android.material.navigation.NavigationView
 import androidx.navigation.findNavController
@@ -24,12 +25,16 @@ import androidx.appcompat.widget.SwitchCompat
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
+import androidx.core.view.isVisible
+import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavController
 import com.dndassistant.databinding.ActivityMainBinding
 import com.dndassistant.ui.CharacterCreationDialog
 import com.dndassistant.ui.SerialMessage
+import com.dndassistant.ui.battle.BattleViewModel
+import com.dndassistant.ui.battle.BattleViewModel.CardData
 import com.dndassistant.ui.characterCreation.CharacterCreationArgs
-import com.dndassistant.ui.processingAnimation
+import com.dndassistant.ui.home.HomeViewModel
 import com.dndassistant.ui.showSnackbar
 import com.google.android.gms.nearby.Nearby
 import com.google.android.gms.nearby.connection.AdvertisingOptions
@@ -45,7 +50,6 @@ import com.google.android.gms.nearby.connection.PayloadCallback
 import com.google.android.gms.nearby.connection.PayloadTransferUpdate
 import com.google.android.gms.nearby.connection.Strategy
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.serialization.json.Json
 
 class MainActivity : AppCompatActivity(), CharacterCreationDialog.CharacterCreationDialogListener {
@@ -60,7 +64,6 @@ class MainActivity : AppCompatActivity(), CharacterCreationDialog.CharacterCreat
         Nearby.getConnectionsClient(this)
     }
     private val SERVICE_ID = "com.dndassistant.nearby"
-
     private val requestPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()
         ){ permissions ->
@@ -69,11 +72,15 @@ class MainActivity : AppCompatActivity(), CharacterCreationDialog.CharacterCreat
             }
         }
 
-    private val connectingDone = MutableStateFlow(false)
-
+//    private val connectingDone = MutableStateFlow(false)
     private val connectedClients = mutableMapOf<String, String>()
-
     private var connectedHost = Pair<String, String>("", "")
+
+    private val homeViewModel: HomeViewModel by viewModels()
+    private val battleViewModel: BattleViewModel by viewModels()
+
+    private val cardDataList = MutableLiveData<MutableList<CardData>>()
+    private val lastRequestingClient = MutableLiveData<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -112,49 +119,94 @@ class MainActivity : AppCompatActivity(), CharacterCreationDialog.CharacterCreat
         }
 
         val modeSwitch = findViewById<SwitchCompat>(R.id.accessSwitch)
-        val hostButton = findViewById<ToggleButton>(R.id.hosting_button)
-        val discoveryButton = findViewById<ToggleButton>(R.id.discovery_button)
         modeSwitch.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked){
                 permission()
-                hostButton.setEnabled(true)
-                discoveryButton.setEnabled(true)
+                homeViewModel.enableHostButton(true)
+                homeViewModel.enableDiscoveryButton(true)
             } else {
                 //To do on switch off
                 stopAll()
-                hostButton.isChecked = false
-                hostButton.setEnabled(false)
-                discoveryButton.isChecked = false
-                discoveryButton.setEnabled(false)
+                homeViewModel.setHostButton(false)
+                homeViewModel.enableHostButton(false)
+                homeViewModel.setDiscoveryButton(false)
+                homeViewModel.enableDiscoveryButton(false)
             }
         }
 
-        hostButton.setOnCheckedChangeListener { _, isChecked ->
-            val hostingInfoText = findViewById<TextView>(R.id.hosting_info)
-            if (isChecked){
-                hostingInfoText.processingAnimation("Advertising", connectingDone)
-                startAdvertising()
+        val switchLayout = findViewById<LinearLayout>(R.id.modeSwitchLayout)
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            switchLayout?.isVisible = destination.id == R.id.nav_home
+        }
+
+        val syncButton = findViewById<Button>(R.id.syncBattleButton)
+        syncButton.setOnClickListener {
+            if (connectedHost == Pair("","")){
+                battleViewModel.sendBattleStateDataToActivity(true)
+                if (cardDataList.value.isNullOrEmpty()){
+                    Log.w(TAG, "Empty card data")
+                    homeViewModel.setInfo("Empty card data")
+                    battleViewModel.clearCardData()
+                } else {
+                    sendBattleState(cardDataList.value!!.toList(), connectedClients.keys.toList())
+                }
             } else {
-
-
-                connectingDone.value = true
-                hostingInfoText.text = buildString { append("Not hosting") }
-                stopAll()
+                Log.d(TAG, "Requesting battle state")
+                connectionsClient.sendPayload(connectedHost.first,Payload.fromBytes(Json.encodeToString<SerialMessage>(
+                    SerialMessage.RequestBattleState).toByteArray()))
             }
         }
 
-        discoveryButton.setOnCheckedChangeListener { _, isChecked ->
-            val discoveryInfoText = findViewById<TextView>(R.id.discovery_info)
-            if (isChecked){
-                discoveryInfoText.processingAnimation("Connecting", connectingDone)
-                startDiscovery()
+        val syncButtonLayout = findViewById<LinearLayout>(R.id.syncBattle)
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            syncButtonLayout?.isVisible = destination.id == R.id.nav_battle
+        }
+
+//        hostButton.setOnCheckedChangeListener { _, isChecked ->
+//            val hostingInfoText = findViewById<TextView>(R.id.hosting_info)
+//            if (isChecked){
+//                hostingInfoText.processingAnimation("Advertising", connectingDone)
+//                startAdvertising()
+//            } else {
+//
+//                connectingDone.value = true
+//                hostingInfoText.text = buildString { append("Not hosting") }
+//                stopAll()
+//            }
+//        }
+
+//        discoveryButton.setOnCheckedChangeListener { _, isChecked ->
+//            val discoveryInfoText = findViewById<TextView>(R.id.discovery_info)
+//            if (isChecked){
+//                discoveryInfoText.processingAnimation("Connecting", connectingDone)
+//                startDiscovery()
+//            } else {
+//
+//
+//                connectingDone.value = true
+//                discoveryInfoText.text = buildString { append("Not discovering") }
+//                stopAll()
+//            }
+//        }
+
+        battleViewModel.syncData.observe(this) { data ->
+            cardDataList.value = data
+            if (lastRequestingClient.value.isNullOrEmpty()){
+                Log.d(TAG, "No client recovered")
             } else {
-
-
-                connectingDone.value = true
-                discoveryInfoText.text = buildString { append("Not discovering") }
-                stopAll()
+                sendBattleState(data, lastRequestingClient.value!!)
+                Log.d(TAG, "Data send to client")
             }
+        }
+
+        homeViewModel.startAdvertising.observe(this){
+            startAdvertising()
+        }
+        homeViewModel.startDiscovery.observe(this){
+            startDiscovery()
+        }
+        homeViewModel.stopAll.observe(this){
+            stopAll()
         }
     }
 
@@ -252,9 +304,6 @@ class MainActivity : AppCompatActivity(), CharacterCreationDialog.CharacterCreat
         }
     }
 
-    private fun startWifiDirectService(){
-
-    }
 
     private fun permission() {
         val permissions = arrayOf(
@@ -333,12 +382,13 @@ class MainActivity : AppCompatActivity(), CharacterCreationDialog.CharacterCreat
         }
 
         override fun onConnectionResult(endpoint: String, result: ConnectionResolution) {
-            connectingDone.value = true
+//            connectingDone.value = true
 
             when (result.status.statusCode){
                 ConnectionsStatusCodes.STATUS_OK -> {
                     Log.d(TAG, "Connected to $endpoint")
-                    findViewById<TextView>(R.id.connection_info).text = "Connection established"
+//                    findViewById<TextView>(R.id.connection_info).text = "Connection established"
+                    homeViewModel.setInfo("Connection established")
                     if (connectedHost == Pair("","")){
                         connectedClients[endpoint] = endpointInfo.endpointName
                         writeConnectedClients(connectedClients.values.toList())
@@ -348,11 +398,13 @@ class MainActivity : AppCompatActivity(), CharacterCreationDialog.CharacterCreat
                 }
                 ConnectionsStatusCodes.STATUS_CONNECTION_REJECTED -> {
                     Log.d(TAG, "Rejected")
-                    findViewById<TextView>(R.id.connection_info).text = "Connection rejected"
+//                    findViewById<TextView>(R.id.connection_info).text = "Connection rejected"
+                    homeViewModel.setInfo("Connection rejected")
                 }
                 ConnectionsStatusCodes.STATUS_ERROR -> {
                     Log.e(TAG, "Error connecting")
-                    findViewById<TextView>(R.id.connection_info).text = "Connection error"
+//                    findViewById<TextView>(R.id.connection_info).text = "Connection error"
+                    homeViewModel.setInfo("Connection error")
                 }
             }
         }
@@ -361,11 +413,13 @@ class MainActivity : AppCompatActivity(), CharacterCreationDialog.CharacterCreat
             Log.d(TAG, "Disconnected from $endpoint")
 
             if (connectedHost == Pair("","")){
-                findViewById<TextView>(R.id.connection_info).text = "Disconnected"
+//                findViewById<TextView>(R.id.connection_info).text = "Disconnected"
+                homeViewModel.setInfo("Client disconnected: ${connectedClients[endpoint]}")
                 connectedClients.remove(endpoint)
                 writeConnectedClients(connectedClients.values.toList())
             } else {
-                findViewById<TextView>(R.id.connection_info).text = "Client disconnected"
+//                findViewById<TextView>(R.id.connection_info).text = "Client disconnected"
+                homeViewModel.setInfo("Disconnected")
             }
         }
     }
@@ -374,16 +428,19 @@ class MainActivity : AppCompatActivity(), CharacterCreationDialog.CharacterCreat
         override fun onEndpointFound(endpoint: String, info: DiscoveredEndpointInfo) {
             Log.d(TAG, "Found endpoint ${info.endpointName}")
             connectedHost = Pair(endpoint, info.endpointName)
-            findViewById<TextView>(R.id.host_name).text = info.endpointName
+//            findViewById<TextView>(R.id.host_name).text = info.endpointName
+            homeViewModel.setHostTag(info.endpointName)
             val name = "Player"
             connectionsClient.requestConnection(name, endpoint, connectionLifecycleCallback)
-            connectingDone.value = true
-            findViewById<TextView>(R.id.your_name).text = name
+//            connectingDone.value = true
+//            findViewById<TextView>(R.id.your_name).text = name
+            homeViewModel.setYourTag(name)
         }
 
         override fun onEndpointLost(endpoint: String) {
             Log.d(TAG, "Lost endpoint $endpoint")
-            findViewById<TextView>(R.id.connection_info).text = "Connection lost"
+//            findViewById<TextView>(R.id.connection_info).text = "Connection lost"
+            homeViewModel.setInfo("Connection lost")
             if (connectedHost == Pair("","")){
                 connectedClients.remove(endpoint)
                 writeConnectedClients(connectedClients.values.toList())
@@ -394,10 +451,9 @@ class MainActivity : AppCompatActivity(), CharacterCreationDialog.CharacterCreat
     private val payloadCallback = object : PayloadCallback(){   //Universal payload receiver
         override fun onPayloadReceived(endpoint: String, payload: Payload) {
             val text = payload.asBytes()?.toString(Charsets.UTF_8) ?: return
-            val temp = payload
-            val temp1 = payload.asBytes()
             Log.d(TAG, "Received data: $text")
-            findViewById<TextView>(R.id.connection_info).text = "Data received"
+//            findViewById<TextView>(R.id.connection_info).text = "Data received"
+            homeViewModel.setInfo("Data received")
 
             if (text.isBlank() || !text.trimStart().startsWith("{") || text == "{}"){
                 Log.w(TAG, "Ignoring non-JSON payload")
@@ -406,9 +462,18 @@ class MainActivity : AppCompatActivity(), CharacterCreationDialog.CharacterCreat
                 val msg = Json.decodeFromString<SerialMessage>(text)
                 when (msg) {
                     is SerialMessage.RequestList -> broadcastConnectedList()
-                    is SerialMessage.ConnectedList -> writeConnectedClients(msg.clients)
-                    is SerialMessage.RequestBattleState -> {}
-                    is SerialMessage.BattleState -> {}
+                    is SerialMessage.ConnectedList -> {
+                        writeConnectedClients(msg.clients)
+//                        connectionsClient.sendPayload(connectedHost.first, Payload.fromBytes(Json.encodeToString<SerialMessage>(SerialMessage.RequestBattleState).toByteArray()))
+                    }
+                    is SerialMessage.RequestBattleState -> {
+                        lastRequestingClient.value = endpoint
+                        battleViewModel.sendBattleStateDataToActivity(true)
+                    }
+                    is SerialMessage.BattleState -> {
+
+                        battleViewModel.receiveBattleStateData(msg.participants)
+                    }
                 }
             }
         }
@@ -427,11 +492,18 @@ class MainActivity : AppCompatActivity(), CharacterCreationDialog.CharacterCreat
         connectionsClient.startAdvertising(name, SERVICE_ID, connectionLifecycleCallback, options)
             .addOnSuccessListener {
                 Log.d(TAG, "Advertising started")
-                findViewById<TextView>(R.id.host_name).text = name
-                findViewById<TextView>(R.id.your_name).text = name
+//                findViewById<TextView>(R.id.host_name).text = name
+//                findViewById<TextView>(R.id.your_name).text = name
+                homeViewModel.setHostTag(name)
+                homeViewModel.setYourTag(name)
+                homeViewModel.resetConnectingAnimation()
+                homeViewModel.setHostButtonInfo("Client found")
             }.addOnFailureListener {
                 Log.e(TAG, "Advertising failed: ${it.message}")
-                findViewById<TextView>(R.id.connection_info).text = "Advertising failed: ${it.message}"
+//                findViewById<TextView>(R.id.connection_info).text = "Advertising failed: ${it.message}"
+                homeViewModel.setInfo("Advertising failed: ${it.message}")
+                homeViewModel.resetConnectingAnimation()
+                homeViewModel.setHostButtonInfo("Failed")
             }
     }
 
@@ -443,10 +515,15 @@ class MainActivity : AppCompatActivity(), CharacterCreationDialog.CharacterCreat
         connectionsClient.startDiscovery(SERVICE_ID, endpointDiscoveryCallback, options)
             .addOnSuccessListener {
                 Log.d(TAG, "Discovery started")
+                homeViewModel.resetConnectingAnimation()
+                homeViewModel.setDiscoveryButtonInfo("Host found")
 
             }.addOnFailureListener {
                 Log.e(TAG, "Discovery failed: ${it.message}")
-                findViewById<TextView>(R.id.connection_info).text = "Discovery failed: ${it.message}"
+//                findViewById<TextView>(R.id.connection_info).text = "Discovery failed: ${it.message}"
+                homeViewModel.setInfo("Discovery failed: ${it.message}")
+                homeViewModel.resetConnectingAnimation()
+                homeViewModel.setDiscoveryButtonInfo("Failed")
             }
     }
 
@@ -473,14 +550,31 @@ class MainActivity : AppCompatActivity(), CharacterCreationDialog.CharacterCreat
         connectionsClient.stopAdvertising()
         connectionsClient.stopDiscovery()
         connectionsClient.stopAllEndpoints()
-        findViewById<TextView>(R.id.host_name).text = "---"
-        findViewById<TextView>(R.id.your_name).text = "---"
-        findViewById<TextView>(R.id.other_names).text = "---"
-        findViewById<TextView>(R.id.connection_info).text = "Connectivity off"
-        connectingDone.value = false
+//        findViewById<TextView>(R.id.host_name).text = "---"
+//        findViewById<TextView>(R.id.your_name).text = "---"
+//        findViewById<TextView>(R.id.other_names).text = "---"
+//        findViewById<TextView>(R.id.connection_info).text = "Connectivity off"
+        homeViewModel.setHostTag("---")
+        homeViewModel.setYourTag("---")
+        homeViewModel.setOtherTags(listOf("---"))
+        homeViewModel.setInfo("Connectivity off")
+//        connectingDone.value = false
     }
 
     fun writeConnectedClients(connectedList: List<String>){
-        findViewById<TextView>(R.id.other_names).text = connectedList.joinToString("\n")
+//        findViewById<TextView>(R.id.other_names).text = connectedList.joinToString("\n")
+        homeViewModel.setOtherTags(connectedList)
+    }
+
+    fun sendBattleState(data: List<BattleViewModel.CardData>, endpoint: String){
+        val json = Json.encodeToString<SerialMessage>(SerialMessage.BattleState(data))
+        val payload = Payload.fromBytes(json.toByteArray())
+        connectionsClient.sendPayload(endpoint, payload)
+    }
+
+    fun sendBattleState(data: List<BattleViewModel.CardData>, endpoints: List<String>){
+        val json = Json.encodeToString<SerialMessage>(SerialMessage.BattleState(data))
+        val payload = Payload.fromBytes(json.toByteArray())
+        connectionsClient.sendPayload(endpoints, payload)
     }
 }

@@ -1,18 +1,14 @@
 package com.dndassistant.ui.battle
 
-import android.view.LayoutInflater
-import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.cardview.widget.CardView
-import androidx.compose.ui.layout.PinnableContainer
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.dndassistant.BattleCardData
 import com.dndassistant.R
 import com.google.android.material.chip.Chip
 import kotlinx.serialization.Serializable
-import java.util.zip.Inflater
 
 class BattleViewModel : ViewModel() {
 
@@ -23,6 +19,9 @@ class BattleViewModel : ViewModel() {
     data class CardData(val cardTitle: String, var health: Int, val healthPool: Int, var shield: Int, val shieldPool: Int, var armor: Int, var initiative: Int,
                         val effects: MutableList<String>, val effectsDuration: MutableList<String>)
     val cardDataList: MutableList<CardData> = mutableListOf()
+
+    private val _cardLiveDataList: MutableLiveData<MutableList<CardData>> = MutableLiveData(mutableListOf())
+    val cardLiveDataList: LiveData<MutableList<CardData>> get() = _cardLiveDataList
 
     var round: Int = 0
 
@@ -70,5 +69,35 @@ class BattleViewModel : ViewModel() {
             val data = CardData(cardTitle,currentHealth,healthPool,currentShield,shieldPool,currentArmor,currentInitiative, effectList, effectDuration)
             return data
         }
+    }
+
+    private val _syncData = MutableLiveData<MutableList<CardData>>()
+    val syncData: LiveData<MutableList<CardData>> = _syncData
+
+    fun sendBattleStateDataToActivity(isDataReady: Boolean){
+        if (!isDataReady) return
+        if (cardDataList.isEmpty()) return
+
+        val data = cardDataList
+        _syncData.value = data
+    }
+
+    fun sendBattleStateDataToActivity(isDataReady: Boolean, endpoint: String){
+        if (!isDataReady) return
+        if (cardDataList.isEmpty()) return
+
+        val data = cardDataList
+        _syncData.value = data
+    }
+
+    fun receiveBattleStateData(receivedCardDataList: List<CardData>){
+        _cardLiveDataList.value = receivedCardDataList.toMutableList()
+        cardDataList.clear()
+        cardDataList.addAll(receivedCardDataList)
+    }
+
+    fun clearCardData(){
+        _cardLiveDataList.value = mutableListOf()
+        cardDataList.clear()
     }
 }

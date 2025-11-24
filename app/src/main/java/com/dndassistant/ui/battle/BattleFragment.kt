@@ -132,8 +132,14 @@ class BattleFragment : Fragment() {
                     Toast.LENGTH_SHORT
                 ).show()
             } else {
+                val cardTitle = lastSelectedCard?.findViewById<TextView>(R.id.cardTitle)?.text.toString()
+                val cardInitiative =  lastSelectedCard?.findViewById<TextView>(R.id.currentInitiative)?.text.toString().toInt()
+                val cardData = viewModel.cardDataList.find { it.cardTitle == cardTitle && it.initiative == cardInitiative }
+                viewModel.cardDataList.remove(cardData)
+
                 deleteCard(lastSelectedCard)
                 lastSelectedCard = null
+
                 currentParticipant = currentParticipant -1
                 highlightNextCard()
             }
@@ -177,8 +183,8 @@ class BattleFragment : Fragment() {
                             ).show()
                             return@setOnClickListener
                         } else {
-                            val cardTitle = lastSelectedCard?.rootView?.findViewById<TextView>(R.id.cardTitle)?.text.toString()
-                            val cardInitiative =  lastSelectedCard?.rootView?.findViewById<TextView>(R.id.currentInitiative)?.text.toString().toInt()
+                            val cardTitle = lastSelectedCard?.findViewById<TextView>(R.id.cardTitle)?.text.toString()
+                            val cardInitiative =  lastSelectedCard?.findViewById<TextView>(R.id.currentInitiative)?.text.toString().toInt()
                             val cardData = viewModel.cardDataList.find { it.cardTitle == cardTitle && it.initiative == cardInitiative}
                             if (cardData == null){
                                 return@setOnClickListener
@@ -189,7 +195,9 @@ class BattleFragment : Fragment() {
                                             lastSelectedCard?.findViewById<TextView>(R.id.currentHealth)?.text.toString()
                                                 .toInt()
                                         val newHealth = health - damage.toString().toInt()
+                                        val index = viewModel.cardDataList.indexOf(cardData)
                                         cardData.health = newHealth
+                                        viewModel.cardDataList[index] = cardData
                                         lastSelectedCard?.findViewById<TextView>(R.id.currentHealth)?.text =
                                             (newHealth).toString()
                                     }
@@ -284,8 +292,8 @@ class BattleFragment : Fragment() {
                             ).show()
                             return@setOnClickListener
                         } else {
-                            val cardTitle = lastSelectedCard?.rootView?.findViewById<TextView>(R.id.cardTitle)?.text.toString()
-                            val cardInitiative =  lastSelectedCard?.rootView?.findViewById<TextView>(R.id.currentInitiative)?.text.toString().toInt()
+                            val cardTitle = lastSelectedCard?.findViewById<TextView>(R.id.cardTitle)?.text.toString()
+                            val cardInitiative =  lastSelectedCard?.findViewById<TextView>(R.id.currentInitiative)?.text.toString().toInt()
                             val cardData = viewModel.cardDataList.find { it.cardTitle == cardTitle && it.initiative == cardInitiative}
                             if (cardData == null){
                                 return@setOnClickListener
@@ -421,6 +429,19 @@ class BattleFragment : Fragment() {
         return root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        viewModel.cardLiveDataList.observe(viewLifecycleOwner) { cardDataList ->
+            for (card in cardDataList){
+                cardContainer.removeAllViews()
+                val cardView = createCardView(card, layoutInflater, cardContainer)
+
+                addCard(cardView)
+            }
+        }
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
@@ -497,8 +518,8 @@ class BattleFragment : Fragment() {
             }
         }
 
-        val cardTitle = cardLayout?.rootView?.findViewById<TextView>(R.id.cardTitle)?.text.toString()
-        val cardInitiative =  cardLayout?.rootView?.findViewById<TextView>(R.id.currentInitiative)?.text.toString().toInt()
+        val cardTitle = cardLayout?.findViewById<TextView>(R.id.cardTitle)?.text.toString()
+        val cardInitiative =  cardLayout?.findViewById<TextView>(R.id.currentInitiative)?.text.toString().toInt()
         val cardData = viewModel.cardDataList.find { it.cardTitle == cardTitle && it.initiative == cardInitiative}
 
         if (cardData == null){
@@ -608,13 +629,15 @@ class BattleFragment : Fragment() {
         val numOfCards = viewModel.cardDataList.size
         if (numOfCards == 0) {return}
 
-        if (currentParticipant != -1){
+        if (currentParticipant > -1){
             val typedValue = TypedValue()
             val found = context?.theme?.resolveAttribute(androidx.appcompat.R.attr.background, typedValue, true)
             val previousCard = cardContainer.getChildAt(currentParticipant) as CardView
 //            previousCard.findViewById<LinearLayout>(R.id.overall_add_participant_layout).setBackgroundColor(resources.getColor(R.color.white))
 //            previousCard.findViewById<FrameLayout>(R.id.overall_add_participant_layout).background = null
             previousCard.findViewById<LinearLayout>(R.id.overall_add_participant_layout).setBackgroundColor(typedValue.data)
+        } else {
+            currentParticipant = -1
         }
 
         currentParticipant = (currentParticipant + 1) % numOfCards

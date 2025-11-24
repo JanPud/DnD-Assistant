@@ -39,7 +39,7 @@ fun TextView.processingAnimation(processText: String, stopWhen: Flow<Boolean>){
                     append(dots[i % dots.size])
                 }
                 i++
-                delay(1000)
+                delay(500)
             }
         }
 
