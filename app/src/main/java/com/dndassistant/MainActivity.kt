@@ -105,6 +105,7 @@ class MainActivity : AppCompatActivity(), CharacterCreationDialog.CharacterCreat
                 R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow, R.id.nav_character, R.id.nav_battle
             ), drawerLayout
         )
+        //board where action takes place -> to implement
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
@@ -389,6 +390,7 @@ class MainActivity : AppCompatActivity(), CharacterCreationDialog.CharacterCreat
                     Log.d(TAG, "Connected to $endpoint")
 //                    findViewById<TextView>(R.id.connection_info).text = "Connection established"
                     homeViewModel.setInfo("Connection established")
+                    homeViewModel.setHostButtonInfo("Client found")
                     if (connectedHost == Pair("","")){
                         connectedClients[endpoint] = endpointInfo.endpointName
                         writeConnectedClients(connectedClients.values.toList())
@@ -427,6 +429,7 @@ class MainActivity : AppCompatActivity(), CharacterCreationDialog.CharacterCreat
     private val endpointDiscoveryCallback = object : EndpointDiscoveryCallback(){   //Client searching for host
         override fun onEndpointFound(endpoint: String, info: DiscoveredEndpointInfo) {
             Log.d(TAG, "Found endpoint ${info.endpointName}")
+            homeViewModel.setDiscoveryButtonInfo("Host found")
             connectedHost = Pair(endpoint, info.endpointName)
 //            findViewById<TextView>(R.id.host_name).text = info.endpointName
             homeViewModel.setHostTag(info.endpointName)
@@ -497,7 +500,7 @@ class MainActivity : AppCompatActivity(), CharacterCreationDialog.CharacterCreat
                 homeViewModel.setHostTag(name)
                 homeViewModel.setYourTag(name)
                 homeViewModel.resetConnectingAnimation()
-                homeViewModel.setHostButtonInfo("Client found")
+
             }.addOnFailureListener {
                 Log.e(TAG, "Advertising failed: ${it.message}")
 //                findViewById<TextView>(R.id.connection_info).text = "Advertising failed: ${it.message}"
@@ -516,7 +519,7 @@ class MainActivity : AppCompatActivity(), CharacterCreationDialog.CharacterCreat
             .addOnSuccessListener {
                 Log.d(TAG, "Discovery started")
                 homeViewModel.resetConnectingAnimation()
-                homeViewModel.setDiscoveryButtonInfo("Host found")
+
 
             }.addOnFailureListener {
                 Log.e(TAG, "Discovery failed: ${it.message}")

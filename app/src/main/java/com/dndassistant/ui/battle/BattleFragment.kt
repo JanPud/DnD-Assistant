@@ -13,14 +13,12 @@ import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.EditText
-import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.PopupWindow
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.cardview.widget.CardView
-import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.dndassistant.R
@@ -29,7 +27,6 @@ import com.dndassistant.ui.AddParticipant
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.dndassistant.ui.battle.BattleViewModel.CardData
 import com.google.android.material.chip.Chip
-import com.google.android.material.color.MaterialColors
 import kotlin.text.toInt
 
 class BattleFragment : Fragment() {
@@ -495,8 +492,14 @@ class BattleFragment : Fragment() {
         sortCards()
     }
 
-    private fun addEffect(cardLayout: LinearLayout?, effect: Chip){
-        cardLayout?.addView(effect)
+    private fun addEffect(effectLayout: LinearLayout?, effect: Chip){
+        effectLayout?.addView(effect)
+
+        val cardView = effectLayout?.parent?.parent?.parent?.parent as CardView
+        val cardTitle = cardView.findViewById<TextView>(R.id.cardTitle)?.text.toString()
+        val cardInitiative =  cardView.findViewById<TextView>(R.id.currentInitiative)?.text.toString().toInt()
+        val cardData = viewModel.cardDataList.find { it.cardTitle == cardTitle && it.initiative == cardInitiative}
+
         effect.setOnClickListener { view ->
             val popupView = layoutInflater.inflate(R.layout.effect_description_layout, null)
             val popupText = popupView.findViewById<TextView>(R.id.chip_description)
@@ -513,15 +516,16 @@ class BattleFragment : Fragment() {
             popupWindow.showAsDropDown(view, 0, 10)
 
             deleteButton.setOnClickListener {
-                cardLayout?.removeView(effect)
+                effectLayout?.removeView(effect)
+                if (viewModel.cardDataList.contains(cardData)) {
+                    val index = cardData!!.effects.indexOf(getEffectData(effect).first)
+                    cardData.effects.removeAt(index)
+                    cardData.effectsDuration.removeAt(index)
+                }
                 popupWindow.dismiss()
             }
         }
 
-        val cardView = cardLayout?.rootView?.rootView?.rootView
-        val cardTitle = cardView?.findViewById<TextView>(R.id.cardTitle)?.text.toString()
-        val cardInitiative =  cardView?.findViewById<TextView>(R.id.currentInitiative)?.text.toString().toInt()
-        val cardData = viewModel.cardDataList.find { it.cardTitle == cardTitle && it.initiative == cardInitiative}
 
         if (cardData == null){
             return
