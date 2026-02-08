@@ -10,7 +10,8 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         tools:context=".ui.characterCreation.CharacterCreation"
-        android:background="@color/gold_bright">
+
+        style="@style/Theme.DnDAssistant.Fragment">
 
         <LinearLayout
             android:id="@+id/stat_frame_layout"
@@ -26,7 +27,7 @@
                 android:id="@+id/stat_frame_S"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/stat_frame"
+                style="@style/Theme.DnDAssistant.StatFrame"
                 android:gravity="end"
                 android:orientation="vertical"
                 android:padding="@dimen/stat_margin">
@@ -72,7 +73,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/frame_margin"
-                android:background="@drawable/stat_frame"
+                style="@style/Theme.DnDAssistant.StatFrame"
                 android:gravity="end"
                 android:orientation="vertical"
                 android:padding="@dimen/stat_margin">
@@ -122,7 +123,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/frame_margin"
-                android:background="@drawable/stat_frame"
+                style="@style/Theme.DnDAssistant.StatFrame"
                 android:gravity="end"
                 android:orientation="vertical"
                 android:padding="@dimen/stat_margin">
@@ -171,7 +172,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/frame_margin"
-                android:background="@drawable/stat_frame"
+                style="@style/Theme.DnDAssistant.StatFrame"
                 android:gravity="end"
                 android:orientation="vertical"
                 android:padding="@dimen/stat_margin">
@@ -220,7 +221,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/frame_margin"
-                android:background="@drawable/stat_frame"
+                style="@style/Theme.DnDAssistant.StatFrame"
                 android:gravity="end"
                 android:orientation="vertical"
                 android:padding="@dimen/stat_margin">
@@ -269,7 +270,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/frame_margin"
-                android:background="@drawable/stat_frame"
+                style="@style/Theme.DnDAssistant.StatFrame"
                 android:gravity="end"
                 android:orientation="vertical"
                 android:padding="@dimen/stat_margin">
@@ -312,6 +313,47 @@
                     android:textSize="@dimen/stat_desc_text_size"
                     android:textStyle="bold" />
             </LinearLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/reassign_stats_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/frame_margin"
+                android:fontFamily="@font/lucida_calligraphy_italic"
+                android:textSize="@dimen/stat_desc_text_size"
+                android:textStyle="bold"
+                android:textAlignment="center"
+                android:padding="0dp"
+                android:text="Reassign"
+
+                app:iconPadding="0dp"
+                android:insetLeft="0dp"
+                android:insetRight="0dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                app:backgroundTint="@null"
+                android:background="@drawable/base_skill_icon"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/save_character_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/frame_margin"
+                android:fontFamily="@font/lucida_calligraphy_italic"
+                android:textSize="@dimen/stat_desc_text_size"
+                android:textStyle="bold"
+                android:textAlignment="center"
+                android:padding="0dp"
+                android:text="Save"
+
+                app:iconPadding="0dp"
+                android:insetLeft="0dp"
+                android:insetRight="0dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                app:backgroundTint="@null"
+                android:background="@drawable/base_skill_icon"/>
+
         </LinearLayout>
 
         <LinearLayout
@@ -344,6 +386,18 @@
                     android:textColor="@color/white"
                     android:textSize="@dimen/stat_text_size"
                     android:textStyle="bold" />
+                <EditText
+                    android:id="@+id/edit_character_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:autoSizeTextType="uniform"
+                    android:fontFamily="@font/lucida_calligraphy_italic"
+                    android:paddingTop="4dp"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/stat_text_size"
+                    android:textStyle="bold"
+                    android:visibility="gone"/>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -442,13 +496,14 @@
             android:layout_height="wrap_content"
             app:layout_constraintStart_toEndOf="@+id/stat_frame_layout"
             app:layout_constraintTop_toBottomOf="@+id/name_layout"
+            app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginStart="@dimen/frame_margin"
             android:layout_marginTop="@dimen/frame_margin"
             android:orientation="horizontal">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:background="@drawable/stat_frame"
+            style="@style/Theme.DnDAssistant.StatFrame"
             android:fontFamily="@font/lucida_calligraphy_italic"
             android:textStyle="bold"
             android:textAlignment="center"
@@ -458,7 +513,7 @@
             android:id="@+id/proficiency_value"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:background="@drawable/stat_frame"
+            style="@style/Theme.DnDAssistant.StatFrame"
             android:fontFamily="@font/lucida_calligraphy_italic"
             android:textStyle="bold"
             android:textAlignment="center"
@@ -466,18 +521,19 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:id="@+id/experience_points_layout"
+            android:layout_width="250dp"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toEndOf="@+id/proficiency_layout"
-            app:layout_constraintTop_toBottomOf="@+id/name_layout"
+            app:layout_constraintStart_toEndOf="@+id/stat_frame_layout"
+            app:layout_constraintTop_toBottomOf="@+id/proficiency_layout"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginHorizontal="@dimen/frame_margin"
             android:layout_marginTop="@dimen/frame_margin"
             android:orientation="vertical">
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/stat_frame"
+                style="@style/Theme.DnDAssistant.StatFrame"
                 android:orientation="horizontal">
                 <TextView
                     android:layout_width="wrap_content"
@@ -505,6 +561,181 @@
                 android:progress="50"
                 android:max="100"/>
         </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/life_stats_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@+id/stat_frame_layout"
+            app:layout_constraintTop_toBottomOf="@+id/experience_points_layout"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginHorizontal="@dimen/frame_margin"
+            android:layout_marginTop="@dimen/frame_margin"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/AR_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                style="@style/Theme.DnDAssistant.StatFrame"
+                android:orientation="vertical"
+                android:layout_marginHorizontal="@dimen/character_class_margin"
+                android:gravity="center">
+                <TextView
+                    android:id="@+id/AR_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lucida_calligraphy_italic"
+                    android:textStyle="bold"
+                    android:textAlignment="center"
+                    android:textSize="@dimen/Proficiency_text_size"
+                    android:text="10"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lucida_calligraphy_italic"
+                    android:textStyle="bold"
+                    android:textAlignment="center"
+                    android:textSize="@dimen/stat_desc_text_size"
+                    android:text="AR"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/HP_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                style="@style/Theme.DnDAssistant.StatFrame"
+                android:orientation="vertical"
+                android:layout_marginHorizontal="@dimen/character_class_margin"
+                android:gravity="center">
+                <TextView
+                    android:id="@+id/HP_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lucida_calligraphy_italic"
+                    android:textStyle="bold"
+                    android:textAlignment="center"
+                    android:textSize="@dimen/Proficiency_text_size"
+                    android:text="12/12"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lucida_calligraphy_italic"
+                    android:textStyle="bold"
+                    android:textAlignment="center"
+                    android:textSize="@dimen/stat_desc_text_size"
+                    android:text="HP"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/SH_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                style="@style/Theme.DnDAssistant.StatFrame"
+                android:orientation="vertical"
+                android:layout_marginHorizontal="@dimen/character_class_margin"
+                android:gravity="center">
+                <TextView
+                    android:id="@+id/SH_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lucida_calligraphy_italic"
+                    android:textStyle="bold"
+                    android:textAlignment="center"
+                    android:textSize="@dimen/Proficiency_text_size"
+                    android:text="11/11"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lucida_calligraphy_italic"
+                    android:textStyle="bold"
+                    android:textAlignment="center"
+                    android:textSize="@dimen/stat_desc_text_size"
+                    android:text="SH"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/EN_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                style="@style/Theme.DnDAssistant.StatFrame"
+                android:orientation="vertical"
+                android:layout_marginHorizontal="@dimen/character_class_margin"
+                android:gravity="center">
+                <TextView
+                    android:id="@+id/EN_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lucida_calligraphy_italic"
+                    android:textStyle="bold"
+                    android:textAlignment="center"
+                    android:textSize="@dimen/Proficiency_text_size"
+                    android:text="10/10"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lucida_calligraphy_italic"
+                    android:textStyle="bold"
+                    android:textAlignment="center"
+                    android:textSize="@dimen/stat_desc_text_size"
+                    android:text="EN"/>
+            </LinearLayout>
+        </LinearLayout>
+
+<!--        <LinearLayout-->
+<!--            android:id="@+id/skills_layout"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            app:layout_constraintStart_toEndOf="@+id/stat_frame_layout"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/life_stats_layout"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            android:layout_marginHorizontal="@dimen/frame_margin"-->
+<!--            android:layout_marginTop="@dimen/frame_margin"-->
+<!--            android:orientation="horizontal">-->
+
+<!--            <TableLayout-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:background="@drawable/stat_frame">-->
+
+<!--                <TableRow>-->
+<!--                    <TextView-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:fontFamily="@font/lucida_calligraphy_italic"-->
+<!--                        android:textStyle="bold"-->
+<!--                        android:textAlignment="center"-->
+<!--                        android:textSize="@dimen/stat_desc_text_size"-->
+<!--                        android:text="+2"/>-->
+<!--                    <CheckBox-->
+<!--                        android:fontFamily="@font/lucida_calligraphy_italic"-->
+<!--                        android:textStyle="bold"-->
+<!--                        android:textAlignment="center"-->
+<!--                        android:textSize="@dimen/stat_desc_text_size"-->
+<!--                        android:minHeight="0dp"-->
+<!--                        android:text="Acrobatics (S)"/>-->
+<!--                </TableRow>-->
+
+<!--            </TableLayout>-->
+
+<!--        </LinearLayout>-->
+        <ScrollView
+            android:layout_width="250dp"
+            android:layout_height="450dp"
+            app:layout_constraintStart_toEndOf="@+id/stat_frame_layout"
+            app:layout_constraintTop_toBottomOf="@+id/life_stats_layout"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginHorizontal="@dimen/frame_margin"
+            android:layout_marginTop="@dimen/frame_margin"
+            style="@style/Theme.DnDAssistant.StatFrame">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/skills_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+        </androidx.recyclerview.widget.RecyclerView>
+        </ScrollView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </HorizontalScrollView>

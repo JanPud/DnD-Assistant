@@ -15,6 +15,8 @@ navigationUiKtx = "2.9.5"
 navigationCompose = "2.9.5"
 serialization = "1.9.0"
 gms-nearby = "19.3.0"
+roomCommonJvm = "2.8.4"
+roomKtx = "2.8.4"
 #gson = "2.11.0"
 
 [libraries]
@@ -32,6 +34,8 @@ androidx-navigation-ui-ktx = { group = "androidx.navigation", name = "navigation
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization"}
 gms-nearby = {group = "com.google.android.gms", name = "play-services-nearby", version.ref = "gms-nearby"}
+androidx-room-common-jvm = { group = "androidx.room", name = "room-common-jvm", version.ref = "roomCommonJvm" }
+androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "roomKtx" }
 #gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson"}
 
 [plugins]

@@ -15,7 +15,8 @@ import com.dndassistant.databinding.FragmentHomeBinding
 import com.dndassistant.ui.processingAnimation
 
 class HomeFragment : Fragment() {
-
+    //automatic synchronization on battle data change - to do
+    //2 state button, request data on change
     private var _binding: FragmentHomeBinding? = null
 
     // This property is only valid between onCreateView and

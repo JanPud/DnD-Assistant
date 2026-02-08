@@ -1,0 +1,7 @@
+<vector xmlns:aapt="http://schemas.android.com/aapt" xmlns:android="http://schemas.android.com/apk/res/android" android:autoMirrored="true" android:height="32dp" android:viewportHeight="32" android:viewportWidth="32" android:width="32dp">
+      
+    <path android:fillColor="@color/default_button_color" android:pathData="M5,0L27,0A5,5 0,0 1,32 5L32,27A5,5 0,0 1,27 32L5,32A5,5 0,0 1,0 27L0,5A5,5 0,0 1,5 0z" android:strokeWidth="5"/>
+      
+    <path android:fillColor="#ffffff" android:pathData="M15.75,15.75m-10,0a10,10 0,1 1,20 0a10,10 0,1 1,-20 0" android:strokeWidth="5"/>
+    
+</vector>
