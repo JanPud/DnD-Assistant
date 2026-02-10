@@ -33,4 +33,15 @@
         <item name="android:windowAnimationStyle">@null</item>
         <item name="android:windowIsFloating">false</item>
     </style>
+
+     <style name="Theme.DnDAssistant.Fragment" parent="Theme.MaterialComponents.DayNight">
+         <item name="android:background">@color/gold_bright</item>
+     </style>
+
+    <style name="Theme.DnDAssistant.StatFrame" parent="Theme.MaterialComponents.DayNight">
+        <item name="android:background">@drawable/stat_frame</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <color name="default_button_color">@color/dark_blue_55</color>
 </resources>

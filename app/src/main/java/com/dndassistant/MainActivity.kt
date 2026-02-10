@@ -29,11 +29,12 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavController
 import com.dndassistant.databinding.ActivityMainBinding
-import com.dndassistant.ui.CharacterCreationDialog
+import com.dndassistant.ui.characterCreation.CharacterCreationDialog
 import com.dndassistant.ui.SerialMessage
 import com.dndassistant.ui.battle.BattleViewModel
 import com.dndassistant.ui.battle.BattleViewModel.CardData
 import com.dndassistant.ui.characterCreation.CharacterCreationArgs
+import com.dndassistant.ui.characterCreation.CharacterCreationViewModel
 import com.dndassistant.ui.home.HomeViewModel
 import com.dndassistant.ui.showSnackbar
 import com.google.android.gms.nearby.Nearby
@@ -78,6 +79,7 @@ class MainActivity : AppCompatActivity(), CharacterCreationDialog.CharacterCreat
 
     private val homeViewModel: HomeViewModel by viewModels()
     private val battleViewModel: BattleViewModel by viewModels()
+//    private val characterCreationViewModel: CharacterCreationViewModel by viewModels()
 
     private val cardDataList = MutableLiveData<MutableList<CardData>>()
     private val lastRequestingClient = MutableLiveData<String>()
@@ -265,6 +267,9 @@ class MainActivity : AppCompatActivity(), CharacterCreationDialog.CharacterCreat
         val args = CharacterCreationArgs(chName, chLevel, chClass, chSubclass)
         val bundle = args.toBundle()
         navigate(R.id.character_creation, bundle)
+
+//        navigate(R.id.character_creation)
+//        characterCreationViewModel.receiveCharacterCreationArgs(chName, chLevel, chClass, chSubclass)
     }
 
     fun closeDrawer() {

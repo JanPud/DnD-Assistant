@@ -16,4 +16,15 @@
         <item name="cardBackgroundDrawable">@drawable/participant_frame_dark</item>
         <item name="android:textColor">@color/white</item>
     </style>
+
+    <style name="Theme.DnDAssistant.Fragment" parent="Theme.MaterialComponents">
+        <item name="android:background">@color/galvan_blue_dark</item>
+    </style>
+
+    <style name="Theme.DnDAssistant.StatFrame" parent="Theme.MaterialComponents">
+        <item name="android:background">@drawable/stat_frame_night</item>
+        <item name="android:textColor">@color/galvan_white</item>
+    </style>
+
+    <color name="default_button_color">@color/gold_warm</color>
 </resources>

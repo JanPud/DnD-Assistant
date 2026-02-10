@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.battle.BattleFragment"
-    android:background="@color/gold_bright">
+
+    style="@style/Theme.DnDAssistant.Fragment">
     <LinearLayout
         android:id="@+id/overall_layout"
         android:layout_width="match_parent"
