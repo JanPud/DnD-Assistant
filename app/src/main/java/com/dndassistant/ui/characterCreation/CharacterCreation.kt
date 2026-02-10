@@ -1,11 +1,13 @@
 package com.dndassistant.ui.characterCreation
 
+import android.content.Context
 import android.os.Bundle
 import android.text.InputType
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
@@ -602,12 +604,20 @@ class CharacterCreation : Fragment() {
             nameField.visibility = View.GONE
             editField.visibility = View.VISIBLE
             editField.requestFocus()
+            val imm = requireContext()
+                .getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.showSoftInput(editField, 0)
         }
         editField.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
             if (!hasFocus){
                 nameField.text = editField.text
                 editField.visibility = View.GONE
                 nameField.visibility = View.VISIBLE
+                viewModel.changeName(nameField.text.toString())
+                nameField.textSize = 20f
+                val imm = requireContext()
+                    .getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(editField.windowToken, 0)
             }
         }
 

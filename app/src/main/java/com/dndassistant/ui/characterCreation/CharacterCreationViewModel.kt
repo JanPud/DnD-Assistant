@@ -423,6 +423,10 @@ class CharacterCreationViewModel(application: Application): AndroidViewModel(app
         }
     }
 
+    fun changeName(name: String){
+        _chName.value = name
+    }
+
     suspend fun collectCharacterFlow(): List<CharacterTable>{
         var a: List<CharacterTable> = listOf()
         repository.getAllCharacters().collect { character ->

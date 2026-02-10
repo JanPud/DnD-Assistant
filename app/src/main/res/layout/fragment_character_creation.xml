@@ -10,6 +10,8 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         tools:context=".ui.characterCreation.CharacterCreation"
+        android:focusableInTouchMode="true"
+        android:clickable="true"
 
         style="@style/Theme.DnDAssistant.Fragment">
 
@@ -360,6 +362,7 @@
             android:id="@+id/name_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:minWidth="250dp"
             android:layout_marginStart="@dimen/frame_margin"
             android:layout_marginTop="@dimen/frame_margin"
             android:layout_marginEnd="@dimen/frame_margin"
@@ -721,12 +724,13 @@
 <!--        </LinearLayout>-->
         <ScrollView
             android:layout_width="250dp"
-            android:layout_height="450dp"
+            android:layout_height="0dp"
             app:layout_constraintStart_toEndOf="@+id/stat_frame_layout"
             app:layout_constraintTop_toBottomOf="@+id/life_stats_layout"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginHorizontal="@dimen/frame_margin"
-            android:layout_marginTop="@dimen/frame_margin"
+            android:layout_marginVertical="@dimen/frame_margin"
             style="@style/Theme.DnDAssistant.StatFrame">
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/skills_layout"
