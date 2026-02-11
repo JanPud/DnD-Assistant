@@ -23,7 +23,7 @@
             android:layout_margin="@dimen/frame_margin"
             android:textAlignment="center"
             android:justificationMode="inter_word"
-            android:text="Player can assign value in range from 0 to 15 to each attribute. But higher have higher costs. Player can assign attribute values such as the sum of its costs is not greater then 27. All values and their costs are displayed below."/>
+            android:text="Player can assign value in range from 0 to 15 to each attribute. But higher have higher costs. Player can assign attribute values such as the sum of its costs is not greater than 27. All values and their costs are displayed below."/>
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
