@@ -108,7 +108,7 @@ class CharacterCreationViewModel(application: Application): AndroidViewModel(app
 
         _attributes.value = when(chSubclass) {
             "Researcher" -> Attributes(8, 14, 10, 15, 14, 10)
-            "Implementer" -> Attributes(11, 14, 10, 14, 14, 10)
+            "Implementer" -> Attributes(12, 14, 10, 14, 14, 8)
             "Dax" -> Attributes(15, 14, 13, 8, 12, 10)
             "Guard" -> Attributes(14, 14, 14, 8, 10, 12)
             "Fundamentalist" -> Attributes(8, 10, 13, 12, 15, 14)
