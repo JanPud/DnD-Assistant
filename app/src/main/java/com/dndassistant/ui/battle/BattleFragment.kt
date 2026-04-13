@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.PopupWindow
 import android.widget.TextView
@@ -26,6 +27,7 @@ import com.dndassistant.databinding.BattleFragmentBinding
 import com.dndassistant.ui.AddParticipant
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.dndassistant.ui.battle.BattleViewModel.CardData
+import com.dndassistant.utilities.BinaryReader
 import com.google.android.material.chip.Chip
 import kotlin.text.toInt
 
@@ -656,7 +658,9 @@ class BattleFragment : Fragment() {
     }
 
     fun createCardView(card: CardData, layoutInflater: LayoutInflater, cardContainer: LinearLayout): CardView{
+        val bitmap = viewModel.getBitmap("main_icon_symbol-playstore")
         val cardView = layoutInflater.inflate(R.layout.battle_participant_card_layout, cardContainer, false) as CardView
+        cardView.findViewById<ImageView>(R.id.cardImage).setImageBitmap(bitmap)
         cardView.findViewById<TextView>(R.id.cardTitle).text = card.cardTitle
         cardView.findViewById<TextView>(R.id.healthPool).text = getString(R.string.health_pool,card.healthPool)
         cardView.findViewById<TextView>(R.id.currentHealth).text = card.health.toString()

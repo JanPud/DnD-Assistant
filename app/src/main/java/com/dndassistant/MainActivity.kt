@@ -78,7 +78,9 @@ class MainActivity : AppCompatActivity(), CharacterCreationDialog.CharacterCreat
     private var connectedHost = Pair<String, String>("", "")
 
     private val homeViewModel: HomeViewModel by viewModels()
-    private val battleViewModel: BattleViewModel by viewModels()
+    private val battleViewModel: BattleViewModel by viewModels() {
+        BattleViewModel.factory(this)
+    }
 //    private val characterCreationViewModel: CharacterCreationViewModel by viewModels()
 
     private val cardDataList = MutableLiveData<MutableList<CardData>>()
