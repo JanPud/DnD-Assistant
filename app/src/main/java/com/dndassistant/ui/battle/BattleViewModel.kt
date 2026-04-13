@@ -1,18 +1,31 @@
 package com.dndassistant.ui.battle
 
+import android.content.Context
+import android.graphics.Bitmap
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.cardview.widget.CardView
+import androidx.collection.LruCache
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
 import com.dndassistant.R
+import com.dndassistant.utilities.BinaryReader
 import com.google.android.material.chip.Chip
 import kotlinx.serialization.Serializable
 
-class BattleViewModel : ViewModel() {
+class BattleViewModel(context: Context) : ViewModel() {
 
-    //should only store data not whole views
+    companion object {
+        fun factory(context: Context) = viewModelFactory {
+            initializer {
+                BattleViewModel(context.applicationContext)
+            }
+        }
+    }
+
     val listOfParticipant = mutableListOf<CardView>()
 //    val cardList: MutableList<BattleCardData> = mutableListOf()
     @Serializable
@@ -31,6 +44,19 @@ class BattleViewModel : ViewModel() {
         "Blind", "Knockdown", "Speed up", "Halt", "Stun", "Bleed", "Critical Strike", "Frozen",
         "Charge",
         "Buff", "Debuff")
+
+    private val binaryReader = BinaryReader.loadFromAssets(context, "binaries/Images_.fook")
+    private val cache = object : LruCache<String, Bitmap>(20) {
+        override fun entryRemoved(
+            evicted: Boolean,
+            key: String,
+            oldValue: Bitmap,
+            newValue: Bitmap?
+        ) {
+            oldValue.recycle()
+        }
+    }
+    val imageNames = binaryReader.imageNames
 
     fun readCardData(card: CardView?): CardData?{
         if (card == null){
@@ -100,4 +126,19 @@ class BattleViewModel : ViewModel() {
         _cardLiveDataList.value = mutableListOf()
         cardDataList.clear()
     }
+
+    fun getBitmap(name: String, width : Int=256, height: Int=256): Bitmap? {
+        cache[name]?.let { return it }
+
+        return binaryReader.loadBitmap(name, width, height).also {
+            cache.put(name, it)
+        }
+    }
+
+    override fun onCleared() {
+        binaryReader.close()
+        cache.evictAll()
+        super.onCleared()
+    }
+
 }
