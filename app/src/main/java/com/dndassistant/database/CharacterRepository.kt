@@ -23,7 +23,19 @@ class CharacterRepository(private val userDao: UserDao) {
         return  userDao.getAllCharacters()
     }
 
+    fun searchForCharacter(searchString: String): Flow<List<CharacterTable>>{
+        return userDao.searchTitle(searchString)
+    }
+
+    fun updateCharacter(entry: CharacterTable){
+        userDao.updateCharacter(entry)
+    }
+
     suspend fun addCharacter(entry: CharacterTable){
         userDao.upsert(entry)
+    }
+
+    suspend fun deleteCharacter(entry: CharacterTable){
+        userDao.deleteCharacter(entry)
     }
 }

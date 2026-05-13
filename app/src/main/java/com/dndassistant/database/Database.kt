@@ -34,5 +34,7 @@ abstract class UserDatabase: RoomDatabase() {
                 return instance
             }
         }
+
+        fun getDao(database: UserDatabase) = database.userDao()
     }
 }
