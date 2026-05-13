@@ -60,6 +60,17 @@ android {
             isEnable = false
         }
     }
+
+    sourceSets {
+        getByName("main"){
+            res.srcDirs(
+                setOf(
+                    "src/main/res/layouts/Character",
+                    "src/main/res"
+                )
+            )
+        }
+    }
 }
 
 dependencies {

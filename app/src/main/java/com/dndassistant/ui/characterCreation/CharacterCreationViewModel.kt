@@ -6,10 +6,12 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.dndassistant.ProfState
+import com.dndassistant.utilities.ProfState
 import com.dndassistant.database.SerializableCharacter
 import com.dndassistant.database.SerializableSkillListElement
-import com.dndassistant.SkillListElement
+import com.dndassistant.utilities.SkillListElement
+import com.dndassistant.utilities.ToastEvent
+import com.dndassistant.utilities.allSkills
 import com.dndassistant.database.CharacterRepository
 import com.dndassistant.database.CharacterTable
 import com.dndassistant.database.UserDatabase
@@ -46,6 +48,7 @@ class CharacterCreationViewModel(application: Application): AndroidViewModel(app
     private val allCharacters: LiveData<List<CharacterTable>>
     private val allCharactersFlow: StateFlow<List<CharacterTable>>
     private val allCharactersLocal: MutableList<CharacterTable> = mutableListOf()
+    private var imageUri: String = ""
 
     init {
         val userDao = UserDatabase.getDatabase(application).userDao()
@@ -470,7 +473,8 @@ class CharacterCreationViewModel(application: Application): AndroidViewModel(app
                 _survivability.value!!.Cur_HP,
                 _survivability.value!!.Cur_Sh,
                 _survivability.value!!.Cur_En,
-                skillList
+                skillList,
+                imageUri
             )
             val characterEntry = CharacterTable(0, _chName.value!!, serializedCharacter)
             viewModelScope.launch {
@@ -480,65 +484,9 @@ class CharacterCreationViewModel(application: Application): AndroidViewModel(app
         }
         return 1
     }
-}
 
-val allSkills = mutableListOf<Pair<String, String>>(
-    Pair("Acrobatics", "S"),
-    Pair("Alchemy", "W"),
-    Pair("Athletics", "S"),
-    Pair("Cautious", "D"),
-    Pair("Encyclopedia", "I"),
-    Pair("History", "I"),
-    Pair("Hand-Eye Coord.", "D"),
-    Pair("Sleight of Hand", "D"),
-    Pair("Medicine", "I"),
-    Pair("Nature", "W"),
-    Pair("Science", "I"),
-    Pair("Strong Head", "V"),
-    Pair("Pain threshold", "V"),
-    Pair("Perception", "W"),
-    Pair("Performance", "C"),
-    Pair("Persuasion", "C"),
-    Pair("Underworld", "C"),
-    Pair("Rhetoric", "C"),
-    Pair("Willpower", "W"),
-    Pair("Strategy", "W"),
-    Pair("Technology", "I"),
-    Pair("Stealth", "D"),
-    Pair("Investigation", "I"),
-    Pair("Insight", "W"),
-    Pair("Intimidation", "C")
-)
-
-val expLvl = listOf<Pair<Int, Int>>(
-    Pair(1, 300),
-    Pair(2, 900),
-    Pair(3, 2700),
-    Pair(4, 6500),
-    Pair(5, 14000),
-    Pair(6, 23000),
-    Pair(7, 34000),
-    Pair(8, 48000),
-    Pair(9, 64000),
-    Pair(10, 85000),
-    Pair(11, 100000),
-    Pair(12, 120000),
-    Pair(13, 140000),
-    Pair(14, 165000),
-    Pair(15, 195000),
-    Pair(16, 225000),
-    Pair(17, 265000),
-    Pair(18, 305000),
-    Pair(19, 355000),
-    Pair(20, 355000)
-
-)
-
-class ToastEvent<out T>(private val content: T) {
-    private var handled = false
-    fun get(): T? = if (handled) null else {
-        handled = true
-        content
+    fun saveImageUri(uri: String){
+        imageUri = uri
     }
 }
 

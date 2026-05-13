@@ -27,7 +27,6 @@ import com.dndassistant.databinding.BattleFragmentBinding
 import com.dndassistant.ui.AddParticipant
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.dndassistant.ui.battle.BattleViewModel.CardData
-import com.dndassistant.utilities.BinaryReader
 import com.google.android.material.chip.Chip
 import kotlin.text.toInt
 
@@ -156,7 +155,8 @@ class BattleFragment : Fragment() {
                 val builder = AlertDialog.Builder(requireContext())
                 val view = layoutInflater.inflate(R.layout.change_participant_health, null)
 
-                view.findViewById<EditText>(R.id.enter_damage_field).hint = "Amount to deal"
+                val damageField = view.findViewById<EditText>(R.id.enter_damage_field)
+                damageField.hint = "Amount to deal"
                 val targetDropDown = view.findViewById<AutoCompleteTextView>(R.id.damage_to)
                 val targetList = listOf("Health", "Shield", "AR", "Initiative")
                 val adapterTarget = ArrayAdapter(requireActivity(), android.R.layout.simple_list_item_1, targetList)
@@ -172,7 +172,8 @@ class BattleFragment : Fragment() {
                     val okButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
 
                     okButton.setOnClickListener {
-                        val damage = view.findViewById<EditText>(R.id.enter_damage_field).text
+//                        val damage = view.findViewById<EditText>(R.id.enter_damage_field).text
+                        val damage = damageField.text
                         if (damage?.toString()?.trim().isNullOrEmpty() ||
                             targetDropDown?.toString()?.trim().isNullOrEmpty()){
                             Toast.makeText(
@@ -265,7 +266,8 @@ class BattleFragment : Fragment() {
                 val builder = AlertDialog.Builder(requireContext())
                 val view = layoutInflater.inflate(R.layout.change_participant_health, null)
 
-                view.findViewById<EditText>(R.id.enter_damage_field).hint = "Amount to regain"
+                val healField = view.findViewById<EditText>(R.id.enter_damage_field)
+                healField.hint = "Amount to regain"
                 val targetDropDown = view.findViewById<AutoCompleteTextView>(R.id.damage_to)
                 val targetList = listOf("Health", "Shield", "AR", "Initiative")
                 val adapterTarget = ArrayAdapter(requireActivity(), android.R.layout.simple_list_item_1, targetList)
@@ -281,8 +283,8 @@ class BattleFragment : Fragment() {
                     val okButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
 
                     okButton.setOnClickListener {
-                        val damage = view.findViewById<EditText>(R.id.enter_damage_field).text
-                        if (damage?.toString()?.trim().isNullOrEmpty() ||
+                        val heal = healField.text
+                        if (heal?.toString()?.trim().isNullOrEmpty() ||
                             targetDropDown?.toString()?.trim().isNullOrEmpty()){
                             Toast.makeText(
                                 requireContext(),
@@ -300,26 +302,26 @@ class BattleFragment : Fragment() {
                                 when (targetDropDown.text.toString()){
                                     "Health" -> {
                                         val health = lastSelectedCard?.findViewById<TextView>(R.id.currentHealth)?.text.toString().toInt()
-                                        val newHealth = health+damage.toString().toInt()
+                                        val newHealth = health+heal.toString().toInt()
                                         cardData.health = newHealth
                                         lastSelectedCard?.findViewById<TextView>(R.id.currentHealth)?.text = (newHealth).toString()
                                     }
                                     "Shield" -> {
                                         val shield = lastSelectedCard?.findViewById<TextView>(R.id.currentShield)?.text.toString().toInt()
-                                        val newShield = shield + damage.toString().toInt()
+                                        val newShield = shield + heal.toString().toInt()
                                         cardData.shield = newShield
                                         lastSelectedCard?.findViewById<TextView>(R.id.currentShield)?.text =
                                             (newShield).toString()
                                     }
                                     "AR" -> {
                                         val armor = lastSelectedCard?.findViewById<TextView>(R.id.currentArmor)?.text.toString().toInt()
-                                        val newArmor = armor+damage.toString().toInt()
+                                        val newArmor = armor+heal.toString().toInt()
                                         cardData.armor = newArmor
                                         lastSelectedCard?.findViewById<TextView>(R.id.currentArmor)?.text = (newArmor).toString()
                                     }
                                     "Initiative" -> {
                                         val initiative = lastSelectedCard?.findViewById<TextView>(R.id.currentInitiative)?.text.toString().toInt()
-                                        val newInit = initiative+damage.toString().toInt()
+                                        val newInit = initiative+heal.toString().toInt()
                                         cardData.initiative = newInit
                                         lastSelectedCard?.findViewById<TextView>(R.id.currentInitiative)?.text = newInit.toString()
                                     }
@@ -361,7 +363,7 @@ class BattleFragment : Fragment() {
                 val adapterEffect = ArrayAdapter(requireActivity(), android.R.layout.simple_list_item_1, effectList)
                 effectDropDown.setAdapter(adapterEffect)
                 effectDropDown.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
-                    val selectedItem = parent.getItemAtPosition(position).toString()
+//                    val selectedItem = parent.getItemAtPosition(position).toString()
 
                     val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                     imm.hideSoftInputFromWindow(effectDropDown.windowToken, 0)
@@ -504,7 +506,7 @@ class BattleFragment : Fragment() {
 
         effect.setOnClickListener { view ->
             val popupView = layoutInflater.inflate(R.layout.effect_description_layout, null)
-            val popupText = popupView.findViewById<TextView>(R.id.chip_description)
+//            val popupText = popupView.findViewById<TextView>(R.id.chip_description)
             val deleteButton = popupView.findViewById<Button>(R.id.delete_effect)
 
             val popupWindow = PopupWindow(
@@ -518,7 +520,7 @@ class BattleFragment : Fragment() {
             popupWindow.showAsDropDown(view, 0, 10)
 
             deleteButton.setOnClickListener {
-                effectLayout?.removeView(effect)
+                effectLayout.removeView(effect)
                 if (viewModel.cardDataList.contains(cardData)) {
                     val index = cardData!!.effects.indexOf(getEffectData(effect).first)
                     cardData.effects.removeAt(index)
@@ -607,7 +609,7 @@ class BattleFragment : Fragment() {
                         val descriptor = effect.text.toString()
                         val label = descriptor.substringBefore(": ")
                         val value = descriptor.substringAfter(": ")
-                        if (value.toString() == "Indefinitely") {
+                        if (value == "Indefinitely") {
                             return
                         } else {
                             val valueInt = value.replace(" rounds", "").toInt()
@@ -638,7 +640,7 @@ class BattleFragment : Fragment() {
 
         if (currentParticipant > -1){
             val typedValue = TypedValue()
-            val found = context?.theme?.resolveAttribute(androidx.appcompat.R.attr.background, typedValue, true)
+//            val found = context?.theme?.resolveAttribute(androidx.appcompat.R.attr.background, typedValue, true)
             val previousCard = cardContainer.getChildAt(currentParticipant) as CardView
 //            previousCard.findViewById<LinearLayout>(R.id.overall_add_participant_layout).setBackgroundColor(resources.getColor(R.color.white))
 //            previousCard.findViewById<FrameLayout>(R.id.overall_add_participant_layout).background = null
@@ -650,7 +652,7 @@ class BattleFragment : Fragment() {
         currentParticipant = (currentParticipant + 1) % numOfCards
 
         val typedValue = TypedValue()
-        val found = context?.theme?.resolveAttribute(R.attr.cardBackgroundDrawable, typedValue, true)
+//        val found = context?.theme?.resolveAttribute(R.attr.cardBackgroundDrawable, typedValue, true)
         val newCard = cardContainer.getChildAt(currentParticipant) as CardView
 //        newCard.findViewById<FrameLayout>(R.id.overall_add_participant_layout).background =
 //            ResourcesCompat.getDrawable(resources, R.drawable.participant_frame, null)
@@ -695,7 +697,7 @@ class BattleFragment : Fragment() {
         }
 
         val typedValue = TypedValue()
-        val found = context?.theme?.resolveAttribute(androidx.appcompat.R.attr.background, typedValue, true)
+//        val found = context?.theme?.resolveAttribute(androidx.appcompat.R.attr.background, typedValue, true)
         cardView.findViewById<LinearLayout>(R.id.overall_add_participant_layout).setBackgroundColor(typedValue.data)
 
         cardView.setOnClickListener {
@@ -707,7 +709,7 @@ class BattleFragment : Fragment() {
                 val lastSelectedCardTitle = lastSelectedCard?.findViewById<TextView>(R.id.cardTitle)?.text
                 if (currentTitle == lastSelectedCardTitle) {
                     val typedValue = TypedValue()
-                    val found = context?.theme?.resolveAttribute(R.attr.cardBackgroundDrawable, typedValue, true)
+//                    val found = context?.theme?.resolveAttribute(R.attr.cardBackgroundDrawable, typedValue, true)
                     lastSelectedCard?.findViewById<LinearLayout>(R.id.overall_add_participant_layout)?.setBackgroundResource(typedValue.resourceId)
                 }else{
                     val typedValue = TypedValue()

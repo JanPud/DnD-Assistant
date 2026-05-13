@@ -1,7 +1,7 @@
 package com.dndassistant.database
 
 import androidx.room.TypeConverter
-import com.dndassistant.ProfState
+import com.dndassistant.utilities.ProfState
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 
@@ -51,5 +51,6 @@ data class SerializableCharacter(
     val Cur_HP: Int,
     val Cur_Sh: Int,
     val Cur_En: Int,
-    val skillList: List<SerializableSkillListElement>)
+    val skillList: List<SerializableSkillListElement>,
+    val image: String? = null) : java.io.Serializable
 

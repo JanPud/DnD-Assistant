@@ -1,6 +1,8 @@
 package com.dndassistant.ui.characterCreation
 
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.text.InputType
 import android.util.Log
@@ -13,19 +15,21 @@ import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dndassistant.MainActivity
-import com.dndassistant.ProfState
-import com.dndassistant.SkillListElement
+import com.dndassistant.utilities.ProfState
+import com.dndassistant.utilities.SkillListElement
 import com.dndassistant.R
+import com.dndassistant.utilities.allSkills
 import com.dndassistant.databinding.FragmentCharacterCreationBinding
-import kotlinx.coroutines.launch
+import com.dndassistant.utilities.expLvl
+import com.dndassistant.utilities.toPx
 
 class CharacterCreation : Fragment() {
 
@@ -36,6 +40,25 @@ class CharacterCreation : Fragment() {
     private lateinit var skillAdapter: SkillListAdapter
 
     private val args by navArgs<CharacterCreationArgs>()
+
+    private val pickImageLauncher = registerForActivityResult(
+        ActivityResultContracts.OpenDocument()
+    ){ uri: Uri? ->
+        uri?.let{
+            requireContext().contentResolver.takePersistableUriPermission(
+                it,
+                Intent.FLAG_GRANT_READ_URI_PERMISSION
+            )
+
+            viewModel.saveImageUri(it.toString())
+
+            val imageLayout = binding.characterImage
+            imageLayout.setImageURI(it)
+            imageLayout.layoutParams.width = requireContext().toPx(70).toInt()
+            imageLayout.layoutParams.height = requireContext().toPx(70).toInt()
+            imageLayout.requestLayout()
+        }
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
@@ -429,6 +452,12 @@ class CharacterCreation : Fragment() {
             }
         }
 
+        val addImageButton = root.findViewById<Button>(R.id.add_image_button)
+        addImageButton.setOnClickListener {
+
+            pickImageLauncher.launch(arrayOf("image/*"))
+        }
+
 
         experienceLayout.setOnClickListener {
             val activity = requireActivity()
@@ -591,7 +620,7 @@ class CharacterCreation : Fragment() {
             dialog.show()
         }
 
-        val EN_layout = survivabilityLayout.findViewById<LinearLayout>(R.id.EN_layout)
+//        val EN_layout = survivabilityLayout.findViewById<LinearLayout>(R.id.EN_layout)
 //        EN_layout.findViewById<TextView>(R.id.EN_value).text = "${5+5*chBasic.Ch_level}"
         viewModel.changeEN()
         binding.ENValue.text =
