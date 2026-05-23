@@ -34,7 +34,6 @@ import com.dndassistant.ui.SerialMessage
 import com.dndassistant.ui.battle.BattleViewModel
 import com.dndassistant.ui.battle.BattleViewModel.CardData
 import com.dndassistant.ui.characterCreation.CharacterCreationArgs
-import com.dndassistant.ui.characterCreation.CharacterCreationViewModel
 import com.dndassistant.ui.home.HomeViewModel
 import com.dndassistant.ui.showSnackbar
 import com.google.android.gms.nearby.Nearby

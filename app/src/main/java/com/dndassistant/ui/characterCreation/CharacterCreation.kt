@@ -76,12 +76,13 @@ class CharacterCreation : Fragment() {
         val proficiencyLayout = root.findViewById<LinearLayout>(R.id.proficiency_layout)
         val experienceLayout = root.findViewById<LinearLayout>(R.id.experience_points_layout)
 
-        binding.characterName.text = viewModel.chName.value
-        binding.characterLevel.text = viewModel.character.value?.Ch_level.toString()
-        binding.characterClass.text = viewModel.character.value?.Ch_class
-        binding.characterSubclass.text = viewModel.character.value?.Ch_subclass
-
-        binding.proficiencyValue.text = "+${viewModel.character.value?.proficiency}"
+        viewModel.character.observe(viewLifecycleOwner) {
+            binding.characterName.text = " ${viewModel.chName.value}"
+            binding.characterLevel.text = viewModel.character.value?.Ch_level.toString()
+            binding.characterClass.text = viewModel.character.value?.Ch_class
+            binding.characterSubclass.text = viewModel.character.value?.Ch_subclass
+            binding.proficiencyValue.text = "+${viewModel.character.value?.proficiency}"
+        }
 //        binding.experienceValue.text = " ${viewModel.character.value?.experience.toString()}"
         if (viewModel.character.value != null) {
             binding.experienceValue.text =
@@ -90,47 +91,64 @@ class CharacterCreation : Fragment() {
             binding.experienceProgressbar.progress = viewModel.character.value!!.experience
         }
 
-        binding.textCharacterS.text = viewModel.attributes.value?.S.toString()
-        binding.textCharacterD.text = viewModel.attributes.value?.D.toString()
-        binding.textCharacterV.text = viewModel.attributes.value?.V.toString()
-        binding.textCharacterI.text = viewModel.attributes.value?.I.toString()
-        binding.textCharacterW.text = viewModel.attributes.value?.W.toString()
-        binding.textCharacterC.text = viewModel.attributes.value?.C.toString()
+        viewModel.attributes.observe(viewLifecycleOwner) {
+            binding.textCharacterS.text = viewModel.attributes.value?.S.toString()
+            binding.textCharacterD.text = viewModel.attributes.value?.D.toString()
+            binding.textCharacterV.text = viewModel.attributes.value?.V.toString()
+            binding.textCharacterI.text = viewModel.attributes.value?.I.toString()
+            binding.textCharacterW.text = viewModel.attributes.value?.W.toString()
+            binding.textCharacterC.text = viewModel.attributes.value?.C.toString()
 
-//        binding.modTextS.text = viewModel.modifiers.value?.S.toString()
-//        binding.modTextD.text = viewModel.modifiers.value?.D.toString()
-//        binding.modTextV.text = viewModel.modifiers.value?.V.toString()
-//        binding.modTextI.text = viewModel.modifiers.value?.I.toString()
-//        binding.modTextW.text = viewModel.modifiers.value?.W.toString()
-//        binding.modTextC.text = viewModel.modifiers.value?.C.toString()
+            viewModel.updateModifiers()
 
-        val chModToBind = mutableListOf<String>("", "", "", "", "", "")
-        if (viewModel.modifiers.value != null) {
-            val chMod = listOf<Int>(
-                viewModel.modifiers.value!!.S,
-                viewModel.modifiers.value!!.D,
-                viewModel.modifiers.value!!.V,
-                viewModel.modifiers.value!!.I,
-                viewModel.modifiers.value!!.W,
-                viewModel.modifiers.value!!.C
-            )
-            var iter = 0
-            for (modifier in chMod) {
-                if (modifier < 0) {
-                    chModToBind[iter] = modifier.toString()
-                } else {
-                    chModToBind[iter] = """+${modifier.toString()}"""
+            val chModToBind = mutableListOf<String>("", "", "", "", "", "")
+            if (viewModel.modifiers.value != null) {
+                val chMod = listOf<Int>(
+                    viewModel.modifiers.value!!.S,
+                    viewModel.modifiers.value!!.D,
+                    viewModel.modifiers.value!!.V,
+                    viewModel.modifiers.value!!.I,
+                    viewModel.modifiers.value!!.W,
+                    viewModel.modifiers.value!!.C
+                )
+                var iter = 0
+                for (modifier in chMod) {
+                    if (modifier < 0) {
+                        chModToBind[iter] = modifier.toString()
+                    } else {
+                        chModToBind[iter] = """+${modifier.toString()}"""
+                    }
+                    iter++
                 }
-                iter++
             }
+
+            binding.modTextS.text = chModToBind[0]
+            binding.modTextD.text = chModToBind[1]
+            binding.modTextV.text = chModToBind[2]
+            binding.modTextI.text = chModToBind[3]
+            binding.modTextW.text = chModToBind[4]
+            binding.modTextC.text = chModToBind[5]
+
+            viewModel.recalculateHP()
         }
 
-        binding.modTextS.text = chModToBind[0]
-        binding.modTextD.text = chModToBind[1]
-        binding.modTextV.text = chModToBind[2]
-        binding.modTextI.text = chModToBind[3]
-        binding.modTextW.text = chModToBind[4]
-        binding.modTextC.text = chModToBind[5]
+        viewModel.survivability.observe(viewLifecycleOwner) {
+            binding.HPValue.text = buildString {
+                append(viewModel.survivability.value?.Cur_HP)
+                append("/")
+                append(viewModel.survivability.value?.HP)
+            }
+            binding.SHValue.text = buildString {
+                append(viewModel.survivability.value?.Cur_Sh)
+                append("/")
+                append(viewModel.survivability.value?.Shield)
+            }
+            binding.ENValue.text = buildString {
+                append(viewModel.survivability.value?.Cur_En)
+                append("/")
+                append(viewModel.survivability.value?.Energy)
+            }
+        }
 
         val reassignButton = root.findViewById<Button>(R.id.reassign_stats_button)
         reassignButton.setOnClickListener {
@@ -369,42 +387,45 @@ class CharacterCreation : Fragment() {
                     }
 
                     okButton.setOnClickListener {
-                        binding.textCharacterS.text = viewModel.attributes.value?.S.toString()
-                        binding.textCharacterD.text = viewModel.attributes.value?.D.toString()
-                        binding.textCharacterV.text = viewModel.attributes.value?.V.toString()
-                        binding.textCharacterI.text = viewModel.attributes.value?.I.toString()
-                        binding.textCharacterW.text = viewModel.attributes.value?.W.toString()
-                        binding.textCharacterC.text = viewModel.attributes.value?.C.toString()
+//                        binding.textCharacterS.text = viewModel.attributes.value?.S.toString()
+//                        binding.textCharacterD.text = viewModel.attributes.value?.D.toString()
+//                        binding.textCharacterV.text = viewModel.attributes.value?.V.toString()
+//                        binding.textCharacterI.text = viewModel.attributes.value?.I.toString()
+//                        binding.textCharacterW.text = viewModel.attributes.value?.W.toString()
+//                        binding.textCharacterC.text = viewModel.attributes.value?.C.toString()
+//                        viewModel.updateModifiers()
+//                        val chModToBind = mutableListOf<String>("", "", "", "", "", "")
+//                        if (viewModel.modifiers.value != null) {
+//                            val chMod = listOf<Int>(
+//                                viewModel.modifiers.value!!.S,
+//                                viewModel.modifiers.value!!.D,
+//                                viewModel.modifiers.value!!.V,
+//                                viewModel.modifiers.value!!.I,
+//                                viewModel.modifiers.value!!.W,
+//                                viewModel.modifiers.value!!.C
+//                            )
+//                            var iter = 0
+//                            for (modifier in chMod) {
+//                                if (modifier < 0) {
+//                                    chModToBind[iter] = modifier.toString()
+//                                } else {
+//                                    chModToBind[iter] = """+${modifier.toString()}"""
+//                                }
+//                                iter++
+//                            }
+//                        }
+//                        binding.modTextS.text = chModToBind[0]
+//                        binding.modTextD.text = chModToBind[1]
+//                        binding.modTextV.text = chModToBind[2]
+//                        binding.modTextI.text = chModToBind[3]
+//                        binding.modTextW.text = chModToBind[4]
+//                        binding.modTextC.text = chModToBind[5]
                         viewModel.updateModifiers()
-                        val chModToBind = mutableListOf<String>("", "", "", "", "", "")
-                        if (viewModel.modifiers.value != null) {
-                            val chMod = listOf<Int>(
-                                viewModel.modifiers.value!!.S,
-                                viewModel.modifiers.value!!.D,
-                                viewModel.modifiers.value!!.V,
-                                viewModel.modifiers.value!!.I,
-                                viewModel.modifiers.value!!.W,
-                                viewModel.modifiers.value!!.C
-                            )
-                            var iter = 0
-                            for (modifier in chMod) {
-                                if (modifier < 0) {
-                                    chModToBind[iter] = modifier.toString()
-                                } else {
-                                    chModToBind[iter] = """+${modifier.toString()}"""
-                                }
-                                iter++
-                            }
-                        }
-                        binding.modTextS.text = chModToBind[0]
-                        binding.modTextD.text = chModToBind[1]
-                        binding.modTextV.text = chModToBind[2]
-                        binding.modTextI.text = chModToBind[3]
-                        binding.modTextW.text = chModToBind[4]
-                        binding.modTextC.text = chModToBind[5]
                         viewModel.updateSkillProf()
                         val skillData = viewModel.skillProficiencies.value!!.toList()
                         skillAdapter.updateData(skillData)
+                        viewModel.updateSurvivability()
+                        binding.HPLayout.requestLayout()
                         dialog.dismiss()
                     }
                 }
@@ -672,7 +693,9 @@ class CharacterCreation : Fragment() {
             Log.d("ChCreation", "No proficiencies data")
         } else {
             val skillsLayout = root.findViewById<RecyclerView>(R.id.skills_layout)
-            skillAdapter = SkillListAdapter(viewModel.skillProficiencies.value!!, viewModel)
+            skillAdapter = SkillListAdapter(viewModel.skillProficiencies.value!!) {skill ->
+                viewModel.changeSkillProf(skill.name)
+            }
 
             skillsLayout.layoutManager = LinearLayoutManager(this.context)
             skillsLayout.adapter = skillAdapter
@@ -713,7 +736,10 @@ class CharacterCreation : Fragment() {
     }
 }
 
-class SkillListAdapter(private val skills: MutableList<SkillListElement>, val viewModel: CharacterCreationViewModel): RecyclerView.Adapter<SkillListAdapter.ItemViewHolder>(){
+class SkillListAdapter(
+    private val skills: MutableList<SkillListElement>,
+    private val onSkillClicked: (SkillListElement) -> Unit
+): RecyclerView.Adapter<SkillListAdapter.ItemViewHolder>(){
 
     class ItemViewHolder(view: View): RecyclerView.ViewHolder(view){
         val skill_modifier: TextView = view.findViewById<TextView>(R.id.skill_modifier)
@@ -754,7 +780,8 @@ class SkillListAdapter(private val skills: MutableList<SkillListElement>, val vi
         holder.skill_checkbox.setOnClickListener {
             it.tag = skill.profState.next()
             skill.profState = skill.profState.next()
-            viewModel.changeSkillProf(skill.name)
+//            viewModel.changeSkillProf(skill.name)
+            onSkillClicked(skill)
 
             val modifierToDisplay = skill.modifier + skill.proficiency*skill.profState.code
             if (modifierToDisplay<0){

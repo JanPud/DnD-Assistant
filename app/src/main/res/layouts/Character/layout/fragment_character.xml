@@ -356,6 +356,7 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:paddingStart="4dp"
+                android:paddingEnd="0dp"
                 android:layout_marginEnd="@dimen/character_class_margin">
 
                 <TextView

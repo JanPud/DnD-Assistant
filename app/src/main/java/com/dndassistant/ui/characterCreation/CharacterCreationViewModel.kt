@@ -128,7 +128,7 @@ class CharacterCreationViewModel(application: Application): AndroidViewModel(app
 
         updateModifiers()
 
-        _survivability.value = Survivability(10, 0, 0, 11, 12, 5+5*chLevel, 11, 12, 10)
+        _survivability.value = Survivability(10, 0, 0, recalculateHP(), 12, 5+5*chLevel, recalculateHP(), 12, 10)
 
         updateSkillProf()
     }
@@ -428,6 +428,38 @@ class CharacterCreationViewModel(application: Application): AndroidViewModel(app
 
     fun changeName(name: String){
         _chName.value = name
+    }
+
+    fun recalculateHP(): Int{
+        return if (_character.value!=null) {
+            when (_character.value!!.Ch_class) {
+                "Scientist" -> 8+4*(_character.value!!.Ch_level-1)
+                "Soldier" -> 16+8*(_character.value!!.Ch_level-1)
+                "Cleric" -> 8+4*(_character.value!!.Ch_level-1)
+                "Rogue" -> 10+5*(_character.value!!.Ch_level-1)
+                "Pilot" -> 12+6*(_character.value!!.Ch_level-1)
+                "Envoy" -> 10+5*(_character.value!!.Ch_level-1)
+                else -> 10
+            }
+        }else {
+            10
+        } +_modifiers.value!!.V*_character.value!!.Ch_level
+    }
+
+    fun updateSurvivability(){
+        if (_survivability.value != null) {
+            _survivability.value = Survivability(
+                10,
+                0,
+                0,
+                recalculateHP(),
+                12,
+                5+5*_character.value!!.Ch_level,
+                recalculateHP(),
+                12,
+                10
+            )
+        }
     }
 
     suspend fun collectCharacterFlow(): List<CharacterTable>{

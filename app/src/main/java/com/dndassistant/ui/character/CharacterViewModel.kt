@@ -1,9 +1,12 @@
 package com.dndassistant.ui.character
 
+import android.net.Uri
 import android.util.Log
+import androidx.core.net.toUri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.dndassistant.database.SerializableSkillListElement
 import com.dndassistant.utilities.ProfState
 import com.dndassistant.utilities.SkillListElement
 import com.dndassistant.utilities.ToastEvent
@@ -33,6 +36,7 @@ class CharacterViewModel : ViewModel() {
         MutableLiveData(mutableListOf())
     private val _skillCost = MutableLiveData<Attributes>()
     private val _highCostEvent = MutableLiveData<ToastEvent<String>>()
+    private val _imageUri = MutableLiveData<Uri>()
 
     val chName: LiveData<String> = _chName
     val character: LiveData<CharacterClass> = _character
@@ -42,6 +46,7 @@ class CharacterViewModel : ViewModel() {
     val skillProficiencies: LiveData<MutableList<SkillListElement>> = _skillProficiencies
     val skillCost: LiveData<Attributes> = _skillCost
     val highCostEvent: LiveData<ToastEvent<String>> = _highCostEvent
+    val imageUri: LiveData<Uri> = _imageUri
 
     fun receiveCharacterCreationArgs(args: CharacterFragmentArgs){
         if (initialized) return
@@ -91,9 +96,14 @@ class CharacterViewModel : ViewModel() {
 
         updateModifiers()
 
-        _survivability.value = Survivability(10, 0, 0, 11, 12, 5+5*args.characterData.characterLevel, 11, 12, 10)
+        _survivability.value = Survivability(args.characterData.AR, args.characterData.Initiative, args.characterData.Dodge, args.characterData.HP, args.characterData.Shield, args.characterData.Energy, args.characterData.Cur_HP, args.characterData.Cur_Sh, args.characterData.Cur_En)
 
-        updateSkillProf()
+        updateSkillProf(args.characterData.skillList)
+
+        if (!args.characterData.image.isNullOrEmpty()) {
+            _imageUri.value = args.characterData.image.toUri()
+        }
+
     }
 
     fun designateAttrCost() : Boolean{
@@ -139,9 +149,21 @@ class CharacterViewModel : ViewModel() {
         }
     }
 
-    fun updateSkillProf(){
+    fun updateSkillProf(skillList: List<SerializableSkillListElement>){
         _skillProficiencies.value = mutableListOf()
-        if (_skillProficiencies.value != null && _modifiers.value != null && _character.value != null) {
+        if (!skillList.isEmpty()){
+            for (skill in skillList) {
+                val scalingSign = allSkills.find { it.first == skill.name }?.second
+                when (scalingSign){
+                    "S" -> {_skillProficiencies.value!!.add(SkillListElement(_modifiers.value!!.S, skill.profState, skill.name, skill.proficiency))}
+                    "D" -> {_skillProficiencies.value!!.add(SkillListElement(_modifiers.value!!.D, skill.profState, skill.name, skill.proficiency))}
+                    "V" -> {_skillProficiencies.value!!.add(SkillListElement(_modifiers.value!!.V, skill.profState, skill.name, skill.proficiency))}
+                    "I" -> {_skillProficiencies.value!!.add(SkillListElement(_modifiers.value!!.I, skill.profState, skill.name, skill.proficiency))}
+                    "W" -> {_skillProficiencies.value!!.add(SkillListElement(_modifiers.value!!.W, skill.profState, skill.name, skill.proficiency))}
+                    "C" -> {_skillProficiencies.value!!.add(SkillListElement(_modifiers.value!!.C, skill.profState, skill.name, skill.proficiency))}
+                }
+            }
+        }else if (_skillProficiencies.value != null && _modifiers.value != null && _character.value != null) {
             for (skill in allSkills) {
                 val name = _skillProficiencies.value!!.find { it.name==skill.first }?.name
                 if (name!=skill.first){
@@ -155,7 +177,7 @@ class CharacterViewModel : ViewModel() {
                     }
                 }
             }
-            _skillProficiencies.value!!.sortBy { it.name }
         }
+        _skillProficiencies.value!!.sortBy { it.name }
     }
 }
