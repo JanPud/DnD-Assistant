@@ -1,7 +1,9 @@
 package com.dndassistant.ui.character
 
+import android.graphics.drawable.ScaleDrawable
 import androidx.fragment.app.Fragment
 import android.os.Bundle
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,13 +13,16 @@ import android.widget.ImageView
 import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.dndassistant.MainActivity
 import com.dndassistant.R
 import com.dndassistant.database.CharacterTable
 import com.dndassistant.databinding.FragmentCharacterOverviewBinding
@@ -45,6 +50,10 @@ class CharacterOverviewFragment : Fragment() {
 
             override fun onItemLongClick(view: View, character: CharacterTable) {
                 showPopupMenuCharacter(view, character)
+            }
+
+            override fun onAddClick() {
+                (activity as MainActivity).showCharacterCreationDialog()
             }
         })
         val recyclerView = binding.charactersDbLayout
@@ -112,22 +121,34 @@ class CharactersListAdapter(
     private val listener: OnItemClickListener
 ): RecyclerView.Adapter<CharactersListAdapter.CharactersViewHolder>(){
 
+    companion object {
+        private const val TYPE_ITEM = 0
+        private const val TYPE_ADD = 1
+    }
+
     interface OnItemClickListener {
         fun onItemClick(character: CharacterTable)
         fun onItemLongClick(view: View, character: CharacterTable)
+        fun onAddClick()
     }
 
     inner class CharactersViewHolder(view: View): RecyclerView.ViewHolder(view){
         val characterName: TextView = view.findViewById<TextView>(R.id.character_name)
         val characterImage: ImageView = view.findViewById<ImageView>(R.id.character_image)
 
-        fun bind(character: CharacterTable){
+        fun bind(character: CharacterTable?, position: Int){
             itemView.setOnClickListener {
-                listener.onItemClick(character)
+                if (getItemViewType(position)==TYPE_ITEM) {
+                    listener.onItemClick(character!!)
+                } else {
+                    listener.onAddClick()
+                }
             }
 
             itemView.setOnLongClickListener {
-                listener.onItemLongClick(itemView, character)
+                character?.let {
+                    listener.onItemLongClick(itemView, it)
+                }
                 true
             }
         }
@@ -140,14 +161,24 @@ class CharactersListAdapter(
     }
 
     override fun onBindViewHolder(holder: CharactersViewHolder, position: Int) {
-        val currentEntry = charactersList[position]
-        holder.characterName.text = currentEntry.title
-        holder.characterImage.setImageURI(currentEntry.character.image?.toUri())
-        holder.bind(charactersList[position])
+        if (getItemViewType(position)==TYPE_ADD){
+            holder.characterName.isVisible = false
+            holder.characterImage.setBackgroundResource(R.color.galvan_blue_light)
+            holder.bind(null, position)
+        } else {
+            val currentEntry = charactersList[position]
+            holder.characterName.text = currentEntry.title
+            holder.characterImage.setImageURI(currentEntry.character.image?.toUri())
+            holder.bind(charactersList[position], position)
+        }
     }
 
     override fun getItemCount(): Int {
-        return charactersList.size
+        return charactersList.size + 1
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return if (position == charactersList.size) TYPE_ADD else TYPE_ITEM
     }
 
     fun setData(characters: List<CharacterTable>){

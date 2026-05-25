@@ -225,7 +225,7 @@ class MainActivity : AppCompatActivity(), CharacterCreationDialog.CharacterCreat
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
-    private fun showCharacterCreationDialog() {
+    fun showCharacterCreationDialog() {
         val builder = AlertDialog.Builder(this)
         val view = layoutInflater.inflate(R.layout.dialog_create_character_name, null)
 
