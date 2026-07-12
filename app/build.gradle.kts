@@ -3,7 +3,12 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.serialization)
     id("androidx.navigation.safeargs.kotlin")
-    id("kotlin-kapt")
+
+//    id("kotlin-kapt")
+//    id("com.google.devtools.ksp")
+//    id("com.google.dagger.hilt.android")
+    alias(libs.plugins.hilt)
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -66,6 +71,7 @@ android {
             res.srcDirs(
                 setOf(
                     "src/main/res/layouts/Character",
+                    "src/main/res/layouts/Compendium",
                     "src/main/res"
                 )
             )
@@ -94,8 +100,12 @@ dependencies {
 //    implementation(libs.gson)
 //    implementation("androidx.multidex:multidex:2.0.1")
 
-    implementation("androidx.room:room-runtime:2.8.4")
-    implementation("androidx.room:room-ktx:2.8.4")
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
 
-    kapt("androidx.room:room-compiler:2.8.4")
+    ksp(libs.androidx.room.compiler)
+
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.compiler)
+
 }

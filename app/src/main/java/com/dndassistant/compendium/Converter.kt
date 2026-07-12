@@ -11,16 +11,16 @@ class Converter {
     }
 
     @TypeConverter
-    fun characterToJson(character: SerializableCharacter): String =
+    fun characterToJson(character: SerializableCompendiumUnit): String =
         json.encodeToString(character)
 
     @TypeConverter
-    fun stringToCharacter(data: String): SerializableCharacter =
+    fun stringToCharacter(data: String): SerializableCompendiumUnit =
         json.decodeFromString(data)
 }
 
 @Serializable
-data class SerializableCharacter(
+data class SerializableCompendiumUnit(
     val id: String,
     val name: String,
     val description: String,

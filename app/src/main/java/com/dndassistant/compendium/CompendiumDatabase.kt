@@ -7,19 +7,19 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 
 @Database(
-    entities = [CharacterTable::class],
+    entities = [CompendiumTable::class],
     version = 1
 )
 @TypeConverters(Converter::class)
-abstract class CharacterDatabase: RoomDatabase() {
+abstract class CompendiumDatabase: RoomDatabase() {
 
-    abstract fun characterDao(): CharacterDao
+    abstract fun compendiumDao(): CompendiumDao
 
     companion object{
         @Volatile
-        private var INSTANCE: CharacterDatabase? = null
+        private var INSTANCE: CompendiumDatabase? = null
 
-        fun getDatabase(context: Context): CharacterDatabase {
+        fun getDatabase(context: Context): CompendiumDatabase {
             val tempInstance = INSTANCE
             if (tempInstance != null){
                 return tempInstance
@@ -27,7 +27,7 @@ abstract class CharacterDatabase: RoomDatabase() {
             synchronized(this){
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
-                    CharacterDatabase::class.java,
+                    CompendiumDatabase::class.java,
                     "DnDAssistant_compendium"
                 ).build()
                 INSTANCE = instance

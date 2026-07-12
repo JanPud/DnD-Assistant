@@ -66,4 +66,10 @@
         android:label="@string/menu_battle"
         tools:layout="@layout/battle_fragment" />
 
+    <fragment
+        android:id="@+id/nav_compendium"
+        android:name="com.dndassistant.ui.compendium.CompendiumFragment"
+        android:label="@string/menu_compendium"
+        tools:layout="@layout/fragment_compendium"/>
+
 </navigation>

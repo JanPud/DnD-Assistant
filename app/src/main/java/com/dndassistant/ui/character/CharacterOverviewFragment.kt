@@ -119,7 +119,7 @@ class CharactersListAdapter(
 
     inner class CharactersViewHolder(view: View): RecyclerView.ViewHolder(view){
         val characterName: TextView = view.findViewById<TextView>(R.id.character_name)
-        val charactetImage: ImageView = view.findViewById<ImageView>(R.id.character_image)
+        val characterImage: ImageView = view.findViewById<ImageView>(R.id.character_image)
 
         fun bind(character: CharacterTable){
             itemView.setOnClickListener {
@@ -142,7 +142,7 @@ class CharactersListAdapter(
     override fun onBindViewHolder(holder: CharactersViewHolder, position: Int) {
         val currentEntry = charactersList[position]
         holder.characterName.text = currentEntry.title
-        holder.charactetImage.setImageURI(currentEntry.character.image?.toUri())
+        holder.characterImage.setImageURI(currentEntry.character.image?.toUri())
         holder.bind(charactersList[position])
     }
 

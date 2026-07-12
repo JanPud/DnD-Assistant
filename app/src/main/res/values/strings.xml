@@ -66,4 +66,5 @@
     <string name="in_caption">IN</string>
     <string name="effect_chip_format">%1$s: %2$d rounds</string>
     <string name="effect_chip_format_string">%1$s: %2$s</string>
+    <string name="menu_compendium">Compendium</string>
 </resources>

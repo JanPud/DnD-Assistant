@@ -2,9 +2,13 @@
 plugins {
     alias(libs.plugins.android.application) apply false
     alias(libs.plugins.kotlin.android) apply false
+//    id("com.google.devtools.ksp") version "2.3.4" apply false
+//    id("com.google.dagger.hilt.android") version "2.51.1" apply false
+    alias(libs.plugins.hilt) apply false
+    alias(libs.plugins.ksp) apply false
 }
 buildscript {
     dependencies {
-        classpath("androidx.navigation:navigation-safe-args-gradle-plugin:2.9.5")
+        classpath(libs.androidx.navigation.safe.args.gradle.plugin)
     }
 }

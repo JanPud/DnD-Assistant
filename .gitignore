@@ -18,3 +18,5 @@ plan.png
 /paking
 *.fook
 
+*.db
+/Compendium database/

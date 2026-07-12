@@ -4,9 +4,9 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "compendium_character")
-data class CharacterTable(
+data class CompendiumTable(
     @PrimaryKey(autoGenerate = true)
     val id: Int,
     val name: String,
-    val character: SerializableCharacter
+    val character: SerializableCompendiumUnit
 )
