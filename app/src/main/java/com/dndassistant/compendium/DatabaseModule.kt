@@ -1,7 +1,10 @@
 package com.dndassistant.compendium
 
 import android.content.Context
+import android.util.Log
 import androidx.room.Room
+import androidx.room.RoomDatabase
+import androidx.sqlite.db.SupportSQLiteDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -21,7 +24,20 @@ object DatabaseModule {
         context,
         CompendiumDatabase::class.java,
         "compendium_database"
-    ).createFromAsset("databases/compendium_character.db").build()
+    )
+        .createFromAsset("databases/compendium_character.db")
+        .addCallback(object : RoomDatabase.Callback() {
+            override fun onCreate(db: SupportSQLiteDatabase) {
+                super.onCreate(db)
+                Log.d("ROOM", "Database created")
+            }
+
+            override fun onOpen(db: SupportSQLiteDatabase) {
+                super.onOpen(db)
+                Log.d("ROOM", "Database opened")
+            }
+        })
+        .build()
 
     @Singleton
     @Provides

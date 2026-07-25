@@ -28,7 +28,7 @@ abstract class CompendiumDatabase: RoomDatabase() {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     CompendiumDatabase::class.java,
-                    "DnDAssistant_compendium"
+                    "compendium_database"
                 ).build()
                 INSTANCE = instance
                 return instance

@@ -18,9 +18,14 @@ class BinaryReader private constructor(
         val height: Int
     )
 
+    private val defaultBinary = "binaries/Images_.fook"
+    private val defaultImage = "main_icon-playstore"
+
     companion object {
         private val MAGIC = "VOID".toByteArray()
+        private var appContext: Context? = null
         fun loadFromAssets(context: Context, assetName: String): BinaryReader {
+            appContext = context
             val externalDir = context.getExternalFilesDir(null)
             val outFile = File(externalDir, assetName)
 
@@ -69,9 +74,10 @@ class BinaryReader private constructor(
     }
 
     val imageNames: List<String> = index.keys.toList()
-
     fun loadBitmap(name: String, maxWidth: Int, maxHeight: Int): Bitmap{
-        val metaData = index[name] ?: return createBitmap(0,0)
+//        val metaData = index[name] ?: return createBitmap(0,0)
+        val metaData = index[name] ?: return BinaryReader.loadFromAssets(appContext!!, defaultBinary).loadBitmap(defaultImage, 64, 64)
+
         val bytes = ByteArray(metaData.size.toInt())
         synchronized(file){
             file.seek(metaData.offset)
