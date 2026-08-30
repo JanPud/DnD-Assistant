@@ -58,7 +58,7 @@ class CompendiumViewModel(
         return
     }
 
-    fun getBitmap(name: String, width : Int=256, height: Int=256): Bitmap? {
+    fun getBitmap(name: String, width : Int=256, height: Int=256): Bitmap {
         cache[name]?.let { return it }
 
         return binaryReader.loadBitmap(name, width, height).also {

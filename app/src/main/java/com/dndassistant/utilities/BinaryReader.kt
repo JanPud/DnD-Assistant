@@ -76,7 +76,7 @@ class BinaryReader private constructor(
     val imageNames: List<String> = index.keys.toList()
     fun loadBitmap(name: String, maxWidth: Int, maxHeight: Int): Bitmap{
 //        val metaData = index[name] ?: return createBitmap(0,0)
-        val metaData = index[name] ?: return BinaryReader.loadFromAssets(appContext!!, defaultBinary).loadBitmap(defaultImage, 64, 64)
+        val metaData = index[name] ?: index[name.lowercase()] ?: return BinaryReader.loadFromAssets(appContext!!, defaultBinary).loadBitmap(defaultImage, 64, 64)
 
         val bytes = ByteArray(metaData.size.toInt())
         synchronized(file){

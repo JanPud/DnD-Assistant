@@ -74,8 +74,8 @@ class CompendiumListAdapter(
     }
 
     inner class CompendiumViewHolder(view: View): RecyclerView.ViewHolder(view){
-        val entryName: TextView = view.findViewById<TextView>(R.id.character_name)
-        val entryImage: ImageView = view.findViewById<ImageView>(R.id.character_image)
+        val entryName: TextView = view.findViewById<TextView>(R.id.entry_name)
+        val entryImage: ImageView = view.findViewById<ImageView>(R.id.entry_image)
 
         fun bind(character: CompendiumTable){
             itemView.setOnClickListener {
@@ -91,14 +91,15 @@ class CompendiumListAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CompendiumViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.character_entry, parent, false)
+            .inflate(R.layout.compendium_entry, parent, false)
+
         return CompendiumViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: CompendiumViewHolder, position: Int) {
         val currentEntry = charactersList[position]
         holder.entryName.text = currentEntry.name
-        val bitmap = imageLoader(currentEntry.name, 64, 64)
+        val bitmap = imageLoader(currentEntry.name, 128, 128)
 //        holder.characterImage.setImageURI(currentEntry.character.image?.toUri())
         holder.entryImage.setImageBitmap(bitmap)
         holder.bind(charactersList[position])
